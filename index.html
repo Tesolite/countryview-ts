@@ -48,23 +48,25 @@
     >
       <div
         id="country-template"
-        class="m-2 flex-col items-center justify-center rounded border-2 p-2 text-center"
+        class="m-2 hidden flex-col items-center justify-between rounded border-2 p-2 text-center"
       >
         <img
           src="public/assets/placeholder-flag.webp"
           alt="Flag placeholder image"
-          class="preview-flag rounded"
+          class="preview-flag max-h-48 rounded pb-4"
         />
-        <h1 class="preview-common-name text-2xl text-white">Country Name</h1>
-        <h2 class="preview-native-name text-xl text-white">
-          Native Country Name
-        </h2>
-        <h3 class="preview-continent text-lg text-white">Continent</h3>
-        <button
-          class="my-2 rounded bg-red-500 p-2 text-white transition-all hover:bg-red-600 active:translate-y-1 active:bg-red-700"
-        >
-          Learn More
-        </button>
+        <div>
+          <h1 class="preview-common-name text-2xl text-white">Country Name</h1>
+          <h2 class="preview-native-name text-xl text-white">
+            Native Country Name
+          </h2>
+          <h3 class="preview-continent text-lg text-white">Continent</h3>
+          <button
+            class="my-2 rounded bg-red-500 p-2 text-white transition-all hover:bg-red-600 active:translate-y-1 active:bg-red-700"
+          >
+            Learn More
+          </button>
+        </div>
       </div>
     </main>
   </body>

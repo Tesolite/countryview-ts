@@ -26,7 +26,7 @@ const displayCountryPreview = (country: CountryPreview) => {
   //Cloning the template and filling it with passed data
   let populatedTemplate = template.cloneNode(true) as HTMLDivElement;
 
-  populatedTemplate.removeAttribute("id");
+  populatedTemplate.id = commonName;
 
   let previewFlag: HTMLImageElement | null =
     populatedTemplate.querySelector(".preview-flag");
@@ -52,6 +52,7 @@ const displayCountryPreview = (country: CountryPreview) => {
 
   //Appending populated country display into the displayed grid.
   grid.appendChild(populatedTemplate);
+  document.getElementById(`${commonName}`)?.classList.replace("hidden", "flex");
 };
 
 //Function for displaying all countries stores in the RESTCountries API.
@@ -76,7 +77,6 @@ const getCountries = async () => {
           country.name.nativeName,
         );
         if (values) {
-          console.log(values[0].official);
           findNativeName = values[0].common;
         }
       }
@@ -95,5 +95,6 @@ const getCountries = async () => {
   }
 };
 
-const getSearchPreviews = async (query?: string) => {};
 const getContinentPreviews = async (continent?: string) => {};
+
+const getSearchPreviews = async (query?: string) => {};
