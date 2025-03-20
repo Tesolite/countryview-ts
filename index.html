@@ -7,7 +7,7 @@
     <script src="src/main.js" defer></script>
     <title>Country Viewer</title>
   </head>
-  <body class="bg-gray-900">
+  <body class="bg-gray-900" onload="getCountries()">
     <header class="bg-red-700">
       <div class="flex items-center justify-between p-2">
         <img
@@ -31,13 +31,25 @@
           <img src="public/assets/search-icon.svg" alt="Country search icon" />
         </div>
         <ul class="flex divide-x text-white">
-          <li class="px-2">Asia</li>
-          <li class="px-2">Africa</li>
-          <li class="px-2">Europe</li>
-          <li class="px-2">North America</li>
-          <li class="px-2">South America</li>
-          <li class="px-2">Australia/Oceania</li>
-          <li class="px-2">Antarctica</li>
+          <li class="px-2"><a href="results.html?continent=Asia">Asia</a></li>
+          <li class="px-2">
+            <a href="#">Africa</a>
+          </li>
+          <li class="px-2">
+            <a href="#">Europe</a>
+          </li>
+          <li class="px-2">
+            <a href="#">North America</a>
+          </li>
+          <li class="px-2">
+            <a href="#">South America</a>
+          </li>
+          <li class="px-2">
+            <a href="#">Australia/Oceania</a>
+          </li>
+          <li class="px-2">
+            <a href="#">Antarctica</a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -54,6 +66,7 @@
           src="public/assets/placeholder-flag.webp"
           alt="Flag placeholder image"
           class="preview-flag max-h-48 rounded pb-4"
+          loading="lazy"
         />
         <div>
           <h1 class="preview-common-name text-2xl text-white">Country Name</h1>

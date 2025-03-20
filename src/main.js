@@ -15,7 +15,7 @@ const displayCountryPreview = (country) => {
         return;
     //Cloning the template and filling it with passed data
     let populatedTemplate = template.cloneNode(true);
-    populatedTemplate.id = commonName;
+    populatedTemplate.id = commonName.toLowerCase().replaceAll(" ", "-");
     let previewFlag = populatedTemplate.querySelector(".preview-flag");
     let commonNameSelector = populatedTemplate.querySelector(".preview-common-name");
     let nativeNameSelector = populatedTemplate.querySelector(".preview-native-name");
@@ -34,7 +34,9 @@ const displayCountryPreview = (country) => {
     }
     //Appending populated country display into the displayed grid.
     grid.appendChild(populatedTemplate);
-    document.getElementById(`${commonName}`)?.classList.replace("hidden", "flex");
+    document
+        .getElementById(`${populatedTemplate.id}`)
+        ?.classList.replace("hidden", "flex");
 };
 //Function for displaying all countries stores in the RESTCountries API.
 const getCountries = async () => {
@@ -69,5 +71,27 @@ const getCountries = async () => {
         console.error(error);
     }
 };
-const getContinentPreviews = async (continent) => { };
+const getContinentPreviews = async (continent) => {
+    const displayedCountries = document.getElementById("country-display-area")?.children;
+    if (!displayedCountries)
+        return;
+    for (let country of displayedCountries) {
+        const countryContinent = getCountryPreviewContinent(country.id);
+        if (countryContinent !== continent) {
+            country.classList.replace("flex", "hidden");
+        }
+        else {
+            country.classList.replace("hidden", "flex");
+        }
+    }
+};
 const getSearchPreviews = async (query) => { };
+const getCountryPreviewContinent = (countryID) => {
+    const countryTemplate = document.getElementById(countryID);
+    if (!countryTemplate)
+        return null;
+    const countryInfo = countryTemplate.children[1];
+    const continentContainer = countryInfo.children[2];
+    const continentContent = continentContainer.textContent;
+    return continentContent;
+};

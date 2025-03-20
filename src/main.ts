@@ -26,7 +26,7 @@ const displayCountryPreview = (country: CountryPreview) => {
   //Cloning the template and filling it with passed data
   let populatedTemplate = template.cloneNode(true) as HTMLDivElement;
 
-  populatedTemplate.id = commonName;
+  populatedTemplate.id = commonName.toLowerCase().replaceAll(" ", "-");
 
   let previewFlag: HTMLImageElement | null =
     populatedTemplate.querySelector(".preview-flag");
@@ -52,7 +52,9 @@ const displayCountryPreview = (country: CountryPreview) => {
 
   //Appending populated country display into the displayed grid.
   grid.appendChild(populatedTemplate);
-  document.getElementById(`${commonName}`)?.classList.replace("hidden", "flex");
+  document
+    .getElementById(`${populatedTemplate.id}`)
+    ?.classList.replace("hidden", "flex");
 };
 
 //Function for displaying all countries stores in the RESTCountries API.
@@ -95,6 +97,31 @@ const getCountries = async () => {
   }
 };
 
-const getContinentPreviews = async (continent?: string) => {};
+const getContinentPreviews = async (continent: string) => {
+  const displayedCountries = document.getElementById(
+    "country-display-area",
+  )?.children;
+  if (!displayedCountries) return;
+
+  for (let country of displayedCountries) {
+    const countryContinent = getCountryPreviewContinent(country.id);
+    if (countryContinent !== continent) {
+      country.classList.replace("flex", "hidden");
+    } else {
+      country.classList.replace("hidden", "flex");
+    }
+  }
+};
 
 const getSearchPreviews = async (query?: string) => {};
+
+const getCountryPreviewContinent = (countryID: string): string | null => {
+  const countryTemplate = document.getElementById(countryID);
+  if (!countryTemplate) return null;
+
+  const countryInfo = countryTemplate.children[1] as HTMLDivElement;
+  const continentContainer = countryInfo.children[2] as HTMLDivElement;
+  const continentContent = continentContainer.textContent as string;
+
+  return continentContent;
+};
