@@ -79,7 +79,7 @@ const getContinentPreviews = (continent) => {
     if (!displayedCountries)
         return;
     for (let country of displayedCountries) {
-        const countryContinent = getCountryPreviewContinent(country.id);
+        const countryContinent = getCountryPreviewContent(country.id, "continent");
         if (countryContinent !== continent) {
             country.classList.replace("flex", "hidden");
         }
@@ -88,14 +88,83 @@ const getContinentPreviews = (continent) => {
         }
     }
 };
-const getSearchPreviews = async (query) => { };
-const getCountryPreviewNames = (countryID) => { };
-const getCountryPreviewContinent = (countryID) => {
+const combinedSearch = async (query) => {
+    const commonNameSearch = await searchByCommonName(query);
+    const foreignNameSearch = await searchByForeignName(query);
+    const codeSearch = await searchByCountryCode(query);
+    let combinedResults = new Set(commonNameSearch.concat(foreignNameSearch, codeSearch));
+    return Array.from(combinedResults.values());
+};
+const searchByCommonName = async (query) => {
+    let matchingCountries = [];
+    const url = `https://restcountries.com/v3.1/name/${query}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Error fetching country data. Status " + response.status);
+        }
+        const data = await response.json();
+        for (let datum of data) {
+            matchingCountries.push(datum.name.common);
+        }
+    }
+    catch (error) {
+        console.warn(error);
+        return [];
+    }
+    return matchingCountries;
+};
+const searchByForeignName = async (query) => {
+    let matchingCountries = [];
+    const url = `https://restcountries.com/v3.1/translation/${query}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Error fetching country data. Status " + response.status);
+        }
+        const data = await response.json();
+        for (let datum of data) {
+            matchingCountries.push(datum.name.common);
+        }
+    }
+    catch (error) {
+        console.warn(error);
+        return [];
+    }
+    return matchingCountries;
+};
+const searchByCountryCode = async (query) => {
+    let matchingCountries = [];
+    const url = `https://restcountries.com/v3.1/alpha/${query}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Error fetching search data. Status " + response.status);
+        }
+        const data = await response.json();
+        for (let datum of data) {
+            matchingCountries.push(datum.name.common);
+        }
+    }
+    catch (error) {
+        console.warn(error);
+        return [];
+    }
+    return matchingCountries;
+};
+const getCountryPreviewContent = (countryID, content) => {
     const countryTemplate = document.getElementById(countryID);
     if (!countryTemplate)
         return null;
     const countryInfo = countryTemplate.children[1];
-    const continentContainer = countryInfo.children[2];
-    const continentContent = continentContainer.textContent;
-    return continentContent;
+    switch (content) {
+        case "commonName":
+            const commonNameContainer = countryInfo.children[0];
+            const commonNameContent = commonNameContainer.textContent;
+            return commonNameContent;
+        case "continent":
+            const continentContainer = countryInfo.children[2];
+            const continentContent = continentContainer.textContent;
+            return continentContent;
+    }
 };

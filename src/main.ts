@@ -108,7 +108,7 @@ const getContinentPreviews = (continent: string) => {
   if (!displayedCountries) return;
 
   for (let country of displayedCountries) {
-    const countryContinent = getCountryPreviewContinent(country.id);
+    const countryContinent = getCountryPreviewContent(country.id, "continent");
     if (countryContinent !== continent) {
       country.classList.replace("flex", "hidden");
     } else {
@@ -117,17 +117,103 @@ const getContinentPreviews = (continent: string) => {
   }
 };
 
-const getSearchPreviews = async (query?: string) => {};
+const combinedSearch = async (query: string): Promise<string[]> => {
+  const commonNameSearch = await searchByCommonName(query);
+  const foreignNameSearch = await searchByForeignName(query);
+  const codeSearch = await searchByCountryCode(query);
 
-const getCountryPreviewNames = (countryID: string) => {};
+  let combinedResults: Set<string> = new Set(
+    commonNameSearch.concat(foreignNameSearch, codeSearch),
+  );
 
-const getCountryPreviewContinent = (countryID: string): string | null => {
+  return Array.from(combinedResults.values());
+};
+
+const searchByCommonName = async (query: string): Promise<string[]> => {
+  let matchingCountries: string[] = [];
+  const url = `https://restcountries.com/v3.1/name/${query}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Error fetching country data. Status " + response.status);
+    }
+    const data = await response.json();
+    for (let datum of data) {
+      matchingCountries.push(datum.name.common);
+    }
+  } catch (error) {
+    console.warn(error);
+    return [];
+  }
+
+  return matchingCountries;
+};
+
+const searchByForeignName = async (query: string): Promise<string[]> => {
+  let matchingCountries: string[] = [];
+  const url = `https://restcountries.com/v3.1/translation/${query}`;
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Error fetching country data. Status " + response.status);
+    }
+
+    const data = await response.json();
+
+    for (let datum of data) {
+      matchingCountries.push(datum.name.common);
+    }
+  } catch (error) {
+    console.warn(error);
+    return [];
+  }
+
+  return matchingCountries;
+};
+
+const searchByCountryCode = async (query: string): Promise<string[]> => {
+  let matchingCountries: string[] = [];
+  const url = `https://restcountries.com/v3.1/alpha/${query}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Error fetching search data. Status " + response.status);
+    }
+
+    const data = await response.json();
+
+    for (let datum of data) {
+      matchingCountries.push(datum.name.common);
+    }
+  } catch (error) {
+    console.warn(error);
+    return [];
+  }
+
+  return matchingCountries;
+};
+
+const getCountryPreviewContent = (
+  countryID: string,
+  content: "commonName" | "continent",
+): string | null => {
   const countryTemplate = document.getElementById(countryID);
   if (!countryTemplate) return null;
-
   const countryInfo = countryTemplate.children[1] as HTMLDivElement;
-  const continentContainer = countryInfo.children[2] as HTMLHeadingElement;
-  const continentContent = continentContainer.textContent as string;
 
-  return continentContent;
+  switch (content) {
+    case "commonName":
+      const commonNameContainer = countryInfo.children[0];
+      const commonNameContent = commonNameContainer.textContent as string;
+      return commonNameContent;
+
+    case "continent":
+      const continentContainer = countryInfo.children[2] as HTMLHeadingElement;
+      const continentContent = continentContainer.textContent as string;
+      return continentContent;
+  }
 };
