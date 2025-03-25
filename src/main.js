@@ -88,6 +88,23 @@ const getContinentPreviews = (continent) => {
         }
     }
 };
+const getSearchPreview = async (query) => {
+    const displayedCountries = document.getElementById("country-display-area")?.children;
+    const searchResults = await combinedSearch(query);
+    if (!displayedCountries)
+        return;
+    for (let country of displayedCountries) {
+        const countryCommonName = getCountryPreviewContent(country.id, "commonName");
+        if (!countryCommonName)
+            continue;
+        if (!searchResults.includes(countryCommonName)) {
+            country.classList.replace("flex", "hidden");
+        }
+        else {
+            country.classList.replace("hidden", "flex");
+        }
+    }
+};
 const combinedSearch = async (query) => {
     const commonNameSearch = await searchByCommonName(query);
     const foreignNameSearch = await searchByForeignName(query);
