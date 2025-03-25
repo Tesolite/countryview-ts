@@ -40,7 +40,7 @@ const displayCountryPreview = (country) => {
 };
 //Function for displaying all countries stores in the RESTCountries API.
 const getCountries = async () => {
-    const url = "https://restcountries.com/v3.1/all";
+    const url = "https://restcountries.com/v3.1/all?fields=name,flags,region";
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -50,13 +50,16 @@ const getCountries = async () => {
         //Iterate through each country in the JSON of the fetched API
         for (let country of data) {
             //Traverse the JSON to object containing native names and choose first available option
+            //If none available, common name will be displayed as the native name.
             let findNativeName = country.name.common;
+            console.log(country);
             if (country.name.nativeName) {
                 const values = Object.values(country.name.nativeName);
-                if (values) {
+                if (values[0]) {
                     findNativeName = values[0].common;
                 }
             }
+            console.log(findNativeName);
             //Save values to CountryPreview type and call display function
             let preview = {
                 flag: country.flags.svg,
@@ -71,7 +74,7 @@ const getCountries = async () => {
         console.error(error);
     }
 };
-const getContinentPreviews = async (continent) => {
+const getContinentPreviews = (continent) => {
     const displayedCountries = document.getElementById("country-display-area")?.children;
     if (!displayedCountries)
         return;
@@ -86,6 +89,7 @@ const getContinentPreviews = async (continent) => {
     }
 };
 const getSearchPreviews = async (query) => { };
+const getCountryPreviewNames = (countryID) => { };
 const getCountryPreviewContinent = (countryID) => {
     const countryTemplate = document.getElementById(countryID);
     if (!countryTemplate)

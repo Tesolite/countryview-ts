@@ -59,7 +59,8 @@ const displayCountryPreview = (country: CountryPreview) => {
 
 //Function for displaying all countries stores in the RESTCountries API.
 const getCountries = async () => {
-  const url: string = "https://restcountries.com/v3.1/all";
+  const url: string =
+    "https://restcountries.com/v3.1/all?fields=name,flags,region";
 
   try {
     const response = await fetch(url);
@@ -73,15 +74,18 @@ const getCountries = async () => {
     //Iterate through each country in the JSON of the fetched API
     for (let country of data) {
       //Traverse the JSON to object containing native names and choose first available option
+      //If none available, common name will be displayed as the native name.
       let findNativeName = country.name.common;
+      console.log(country);
       if (country.name.nativeName) {
         const values: any[] | undefined | null = Object.values(
           country.name.nativeName,
         );
-        if (values) {
+        if (values[0]) {
           findNativeName = values[0].common;
         }
       }
+      console.log(findNativeName);
       //Save values to CountryPreview type and call display function
       let preview: CountryPreview = {
         flag: country.flags.svg,
@@ -97,7 +101,7 @@ const getCountries = async () => {
   }
 };
 
-const getContinentPreviews = async (continent: string) => {
+const getContinentPreviews = (continent: string) => {
   const displayedCountries = document.getElementById(
     "country-display-area",
   )?.children;
@@ -115,12 +119,14 @@ const getContinentPreviews = async (continent: string) => {
 
 const getSearchPreviews = async (query?: string) => {};
 
+const getCountryPreviewNames = (countryID: string) => {};
+
 const getCountryPreviewContinent = (countryID: string): string | null => {
   const countryTemplate = document.getElementById(countryID);
   if (!countryTemplate) return null;
 
   const countryInfo = countryTemplate.children[1] as HTMLDivElement;
-  const continentContainer = countryInfo.children[2] as HTMLDivElement;
+  const continentContainer = countryInfo.children[2] as HTMLHeadingElement;
   const continentContent = continentContainer.textContent as string;
 
   return continentContent;
