@@ -76,7 +76,6 @@ const getCountries = async () => {
       //Traverse the JSON to object containing native names and choose first available option
       //If none available, common name will be displayed as the native name.
       let findNativeName = country.name.common;
-      console.log(country);
       if (country.name.nativeName) {
         const values: any[] | undefined | null = Object.values(
           country.name.nativeName,
@@ -85,7 +84,6 @@ const getCountries = async () => {
           findNativeName = values[0].common;
         }
       }
-      console.log(findNativeName);
       //Save values to CountryPreview type and call display function
       let preview: CountryPreview = {
         flag: country.flags.svg,
@@ -150,8 +148,9 @@ const combinedSearch = async (query: string): Promise<string[]> => {
 };
 
 const searchByCommonName = async (query: string): Promise<string[]> => {
+  query = query.toLowerCase();
   let matchingCountries: string[] = [];
-  const url = `https://restcountries.com/v3.1/name/${query}`;
+  const url = `https://restcountries.com/v3.1/name/${query}?fields=name,altSpellings`;
 
   try {
     const response = await fetch(url);
@@ -160,7 +159,17 @@ const searchByCommonName = async (query: string): Promise<string[]> => {
     }
     const data = await response.json();
     for (let datum of data) {
-      matchingCountries.push(datum.name.common);
+      const commonNameLower = datum.name.common.toLowerCase();
+      const altSpellingsLower = datum.altSpellings.map((spelling: string) =>
+        spelling.toLowerCase(),
+      );
+      let nameMatchesSearch =
+        commonNameLower.includes(query) || altSpellingsLower.includes(query)
+          ? true
+          : false;
+      if (nameMatchesSearch) {
+        matchingCountries.push(datum.name.common);
+      }
     }
   } catch (error) {
     console.warn(error);
@@ -172,7 +181,7 @@ const searchByCommonName = async (query: string): Promise<string[]> => {
 
 const searchByForeignName = async (query: string): Promise<string[]> => {
   let matchingCountries: string[] = [];
-  const url = `https://restcountries.com/v3.1/translation/${query}`;
+  const url = `https://restcountries.com/v3.1/translation/${query}?fields=name,translations`;
   try {
     const response = await fetch(url);
 
@@ -183,7 +192,28 @@ const searchByForeignName = async (query: string): Promise<string[]> => {
     const data = await response.json();
 
     for (let datum of data) {
-      matchingCountries.push(datum.name.common);
+      let commonTranslationMatchesSearch: boolean = false;
+      //Traverse the country's JSON to object containing name translations
+      //and check if any match search query
+      //If any do, add to list of countries to display
+      let translations: any[] | undefined | null = Object.values(
+        datum.translations,
+      );
+      if (translations) {
+        for (let translation of translations) {
+          let commonTranslationLower = translation.common.toLowerCase();
+          if (!commonTranslationMatchesSearch) {
+            commonTranslationMatchesSearch = commonTranslationLower.includes(
+              query,
+            )
+              ? true
+              : false;
+          }
+        }
+      }
+      if (commonTranslationMatchesSearch) {
+        matchingCountries.push(datum.name.common);
+      }
     }
   } catch (error) {
     console.warn(error);
