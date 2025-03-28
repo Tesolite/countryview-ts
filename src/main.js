@@ -1,4 +1,12 @@
 "use strict";
+const formSearch = document.getElementById("search-bar");
+if (formSearch) {
+    const inQuery = document.getElementById("search-country");
+    formSearch.onsubmit = (event) => {
+        event.preventDefault();
+        getSearchPreview(inQuery.value);
+    };
+}
 //Function for displaying countries on homepage
 const displayCountryPreview = (country) => {
     //Setting parameters through input CountryPreview variable
@@ -156,7 +164,7 @@ const searchByForeignName = async (query) => {
                 for (let translation of translations) {
                     let commonTranslationLower = translation.common.toLowerCase();
                     if (!commonTranslationMatchesSearch) {
-                        commonTranslationMatchesSearch = commonTranslationLower.includes(query)
+                        commonTranslationMatchesSearch = commonTranslationLower.startsWith(query)
                             ? true
                             : false;
                     }

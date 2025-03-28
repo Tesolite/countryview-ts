@@ -21,14 +21,25 @@
     <nav class="bg-purple-600 p-4">
       <div class="flex items-center justify-between">
         <div class="flex rounded bg-white p-1">
-          <input
-            type="text"
-            name="search-country"
-            id="search-country"
-            placeholder="Enter country name..."
-            class="min-w-64 rounded"
-          />
-          <img src="public/assets/search-icon.svg" alt="Country search icon" />
+          <form
+            id="search-bar"
+            class="flex items-center justify-between"
+            action=""
+          >
+            <input
+              type="text"
+              name="search-country"
+              id="search-country"
+              placeholder="Enter country name..."
+              class="min-w-64 rounded"
+            />
+            <button id="btn-submit-search" type="submit">
+              <img
+                src="public/assets/search-icon.svg"
+                alt="Country search icon"
+              />
+            </button>
+          </form>
         </div>
         <ul class="flex divide-x text-white">
           <li class="px-2"><a href="results.html?continent=Asia">Asia</a></li>

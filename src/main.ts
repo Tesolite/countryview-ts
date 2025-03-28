@@ -1,3 +1,14 @@
+const formSearch = document.getElementById("search-bar");
+if (formSearch) {
+  const inQuery: HTMLInputElement = document.getElementById(
+    "search-country",
+  ) as HTMLInputElement;
+  formSearch.onsubmit = (event) => {
+    event.preventDefault();
+    getSearchPreview(inQuery.value);
+  };
+}
+
 //type for displaying countries on homepage
 type CountryPreview = {
   flag: string;
@@ -203,7 +214,7 @@ const searchByForeignName = async (query: string): Promise<string[]> => {
         for (let translation of translations) {
           let commonTranslationLower = translation.common.toLowerCase();
           if (!commonTranslationMatchesSearch) {
-            commonTranslationMatchesSearch = commonTranslationLower.includes(
+            commonTranslationMatchesSearch = commonTranslationLower.startsWith(
               query,
             )
               ? true
