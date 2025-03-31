@@ -1,5 +1,3 @@
-//TODO: CONVERT EUROPE FILTER TO LOWERCASE
-
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
   const inQuery: HTMLInputElement = document.getElementById(
@@ -10,6 +8,17 @@ if (formSearch) {
     getSearchPreview(inQuery.value);
   };
 }
+
+const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
+
+btnHamburger?.addEventListener("click", () => {
+  const isOpen = btnHamburger.classList.contains("menu-open") ? true : false;
+  if (!isOpen) {
+    btnHamburger.classList.replace("menu-closed", "menu-open");
+    return;
+  }
+  btnHamburger.classList.replace("menu-open", "menu-closed");
+});
 
 //type for displaying countries on homepage
 type CountryPreview = {

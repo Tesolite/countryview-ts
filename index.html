@@ -41,18 +41,21 @@
             </button>
           </form>
         </div>
-        <button id="btn-burger" class="hamburger group flex flex-col gap-[2px]">
+        <button
+          id="btn-burger"
+          class="hamburger menu-closed group flex flex-col gap-[2px]"
+        >
           <span
-            id="top-bun"
-            class="block h-1 w-5 bg-black [transition:translate_100ms_0ms,rotate_100ms_100ms] group-hover:translate-y-[6px] group-hover:rotate-45 before:content-['']"
+            id="burger-top-bun"
+            class="block h-1 w-5 bg-white group-[.menu-closed]:[transition:rotate_100ms_0ms,translate_100ms_100ms] group-[.menu-open]:translate-y-[6px] group-[.menu-open]:rotate-45 group-[.menu-open]:[transition:translate_100ms_0ms,rotate_100ms_100ms] before:content-['']"
           ></span>
           <span
-            id="meat"
-            class="block h-1 w-5 bg-black [transition:opacity_0ms_100ms] group-hover:opacity-0 before:content-['']"
+            id="burger-meat"
+            class="block h-1 w-5 bg-white [transition:opacity_0ms_100ms] group-[.menu-open]:opacity-0 before:content-['']"
           ></span>
           <span
-            id="bottom-bun"
-            class="block h-1 w-5 bg-black [transition:translate_100ms_0ms,rotate_100ms_100ms] group-hover:-translate-y-[6px] group-hover:-rotate-45 before:content-['']"
+            id="burger-bottom-bun"
+            class="block h-1 w-5 bg-white group-[.menu-closed]:[transition:rotate_100ms_0ms,translate_100ms_100ms] group-[.menu-open]:-translate-y-[6px] group-[.menu-open]:-rotate-45 group-[.menu-open]:[transition:translate_100ms_0ms,rotate_100ms_100ms] before:content-['']"
           ></span>
         </button>
         <ul class="flex divide-x text-white">
