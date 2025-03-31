@@ -1,3 +1,5 @@
+//TODO: CONVERT EUROPE FILTER TO LOWERCASE
+
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
   const inQuery: HTMLInputElement = document.getElementById(
@@ -117,12 +119,15 @@ const getContinentPreviews = (continent: string) => {
   if (!displayedCountries) return;
 
   for (let country of displayedCountries) {
-    const countryContinent = getCountryPreviewContent(country.id, "continent");
-    if (countryContinent !== continent) {
+    const countryContinent: string = getCountryPreviewContent(
+      country.id,
+      "continent",
+    ) as string;
+    if (countryContinent.toLowerCase() !== continent.toLowerCase()) {
       country.classList.replace("flex", "hidden");
-    } else {
-      country.classList.replace("hidden", "flex");
+      continue;
     }
+    country.classList.replace("hidden", "flex");
   }
 };
 const getSearchPreview = async (query: string) => {
@@ -147,9 +152,15 @@ const getSearchPreview = async (query: string) => {
 };
 
 const combinedSearch = async (query: string): Promise<string[]> => {
-  const commonNameSearch = await searchByCommonName(query);
-  const foreignNameSearch = await searchByForeignName(query);
+  let commonNameSearch = await searchByCommonName(query);
+  let foreignNameSearch = await searchByForeignName(query);
   const codeSearch = await searchByCountryCode(query);
+
+  // Prevent country code search results from being diluted by other search results
+  if (codeSearch.length > 0) {
+    commonNameSearch = [];
+    foreignNameSearch = [];
+  }
 
   let combinedResults: Set<string> = new Set(
     commonNameSearch.concat(foreignNameSearch, codeSearch),

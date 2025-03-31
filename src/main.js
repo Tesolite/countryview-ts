@@ -1,4 +1,5 @@
 "use strict";
+//TODO: CONVERT EUROPE FILTER TO LOWERCASE
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
     const inQuery = document.getElementById("search-country");
@@ -86,12 +87,11 @@ const getContinentPreviews = (continent) => {
         return;
     for (let country of displayedCountries) {
         const countryContinent = getCountryPreviewContent(country.id, "continent");
-        if (countryContinent !== continent) {
+        if (countryContinent.toLowerCase() !== continent.toLowerCase()) {
             country.classList.replace("flex", "hidden");
+            continue;
         }
-        else {
-            country.classList.replace("hidden", "flex");
-        }
+        country.classList.replace("hidden", "flex");
     }
 };
 const getSearchPreview = async (query) => {
@@ -112,9 +112,14 @@ const getSearchPreview = async (query) => {
     }
 };
 const combinedSearch = async (query) => {
-    const commonNameSearch = await searchByCommonName(query);
-    const foreignNameSearch = await searchByForeignName(query);
+    let commonNameSearch = await searchByCommonName(query);
+    let foreignNameSearch = await searchByForeignName(query);
     const codeSearch = await searchByCountryCode(query);
+    // Prevent country code search results from being diluted by other search results
+    if (codeSearch.length > 0) {
+        commonNameSearch = [];
+        foreignNameSearch = [];
+    }
     let combinedResults = new Set(commonNameSearch.concat(foreignNameSearch, codeSearch));
     return Array.from(combinedResults.values());
 };
