@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="src/output.css" />
+    <link rel="preconnect" href="https://restcountries.com/" />
     <script src="src/main.js" defer></script>
     <title>Country Viewer</title>
   </head>
@@ -18,32 +19,11 @@
         <p class="text-white">Light mode(?)</p>
       </div>
     </header>
-    <nav class="bg-purple-600 p-4">
+    <nav class="sticky top-0 bg-purple-600 p-4">
       <div class="flex items-center justify-between">
-        <div class="flex rounded bg-white p-1">
-          <form
-            id="search-bar"
-            class="flex items-center justify-between"
-            action=""
-          >
-            <input
-              type="text"
-              name="search-country"
-              id="search-country"
-              placeholder="Enter country name..."
-              class="min-w-64 rounded"
-            />
-            <button id="btn-submit-search" type="submit">
-              <img
-                src="public/assets/search-icon.svg"
-                alt="Country search icon"
-              />
-            </button>
-          </form>
-        </div>
         <button
           id="btn-burger"
-          class="hamburger menu-closed group flex flex-col gap-[2px]"
+          class="hamburger menu-closed group peer flex flex-col gap-[2px] rounded p-1 hover:shadow lg:hidden"
         >
           <span
             id="burger-top-bun"
@@ -58,8 +38,35 @@
             class="block h-1 w-5 bg-white group-[.menu-closed]:[transition:rotate_100ms_0ms,translate_100ms_100ms] group-[.menu-open]:-translate-y-[6px] group-[.menu-open]:-rotate-45 group-[.menu-open]:[transition:translate_100ms_0ms,rotate_100ms_100ms] before:content-['']"
           ></span>
         </button>
-        <ul class="flex divide-x text-white">
-          <li class="px-2"><a href="results.html?continent=Asia">Asia</a></li>
+        <div class="flex rounded bg-white p-1">
+          <form
+            id="search-bar"
+            class="flex items-center justify-between"
+            action=""
+          >
+            <input
+              type="text"
+              name="search-country"
+              id="search-country"
+              placeholder="Enter country name..."
+              class="rounded md:min-w-64"
+            />
+            <button id="btn-submit-search" type="submit">
+              <img
+                src="public/assets/search-icon.svg"
+                alt="Country search icon"
+                class="size-fit"
+              />
+            </button>
+          </form>
+        </div>
+
+        <ul
+          class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around divide-x rounded bg-purple-600 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row"
+        >
+          <li class="bg-inherit px-2">
+            <a href="results.html?continent=Asia">Asia</a>
+          </li>
           <li class="px-2">
             <a href="#">Africa</a>
           </li>
@@ -88,7 +95,7 @@
     >
       <div
         id="country-template"
-        class="m-2 hidden flex-col items-center justify-between rounded border-2 p-2 text-center"
+        class="m-2 hidden flex-col items-center justify-between rounded border-2 bg-indigo-500/50 p-2 text-center"
       >
         <img
           src="public/assets/placeholder-flag.webp"

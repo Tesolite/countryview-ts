@@ -1,3 +1,4 @@
+//TODO: MANAGE SEARCHES WITH 0 RESULTS
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
   const inQuery: HTMLInputElement = document.getElementById(
@@ -92,6 +93,7 @@ const getCountries = async () => {
     }
 
     const data = await response.json();
+    const gatheredData: CountryPreview[] = [];
 
     //Iterate through each country in the JSON of the fetched API
     for (let country of data) {
@@ -106,15 +108,21 @@ const getCountries = async () => {
           findNativeName = values[0].common;
         }
       }
-      //Save values to CountryPreview type and call display function
+      //Save values to CountryPreview type and push into array
       let preview: CountryPreview = {
         flag: country.flags.svg,
         commonName: country.name.common,
         nativeName: findNativeName,
         continent: country.region,
       };
+      gatheredData.push(preview);
+    }
 
-      displayCountryPreview(preview);
+    const sortedData: CountryPreview[] = gatheredData.sort((a, b) =>
+      a.commonName > b.commonName ? 1 : a.commonName < b.commonName ? -1 : 0,
+    );
+    for (let sortedCountry of sortedData) {
+      displayCountryPreview(sortedCountry);
     }
   } catch (error) {
     console.error(error);
@@ -143,6 +151,10 @@ const getSearchPreview = async (query: string) => {
   const displayedCountries = document.getElementById(
     "country-display-area",
   )?.children;
+  if (query.length === 0) {
+    getCountries();
+    return;
+  }
   const searchResults = await combinedSearch(query);
   if (!displayedCountries) return;
 

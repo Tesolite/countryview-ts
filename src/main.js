@@ -1,4 +1,5 @@
 "use strict";
+//TODO: MANAGE SEARCHES WITH 0 RESULTS
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
     const inQuery = document.getElementById("search-country");
@@ -64,6 +65,7 @@ const getCountries = async () => {
             throw new Error("Error fetching country data. Status " + response.status);
         }
         const data = await response.json();
+        const gatheredData = [];
         //Iterate through each country in the JSON of the fetched API
         for (let country of data) {
             //Traverse the JSON to object containing native names and choose first available option
@@ -75,14 +77,18 @@ const getCountries = async () => {
                     findNativeName = values[0].common;
                 }
             }
-            //Save values to CountryPreview type and call display function
+            //Save values to CountryPreview type and push into array
             let preview = {
                 flag: country.flags.svg,
                 commonName: country.name.common,
                 nativeName: findNativeName,
                 continent: country.region,
             };
-            displayCountryPreview(preview);
+            gatheredData.push(preview);
+        }
+        const sortedData = gatheredData.sort((a, b) => a.commonName > b.commonName ? 1 : a.commonName < b.commonName ? -1 : 0);
+        for (let sortedCountry of sortedData) {
+            displayCountryPreview(sortedCountry);
         }
     }
     catch (error) {
@@ -104,6 +110,10 @@ const getContinentPreviews = (continent) => {
 };
 const getSearchPreview = async (query) => {
     const displayedCountries = document.getElementById("country-display-area")?.children;
+    if (query.length === 0) {
+        getCountries();
+        return;
+    }
     const searchResults = await combinedSearch(query);
     if (!displayedCountries)
         return;
