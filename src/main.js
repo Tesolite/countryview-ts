@@ -9,6 +9,35 @@ if (formSearch) {
     };
 }
 const btnHamburger = document.getElementById("btn-burger");
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.location.pathname.endsWith("index.html")) {
+        displayCountries();
+    }
+});
+const navAsia = document.getElementById("nav-asia");
+navAsia?.addEventListener("click", () => {
+    getContinentPreviews("asia");
+});
+const navAfrica = document.getElementById("nav-africa");
+navAfrica?.addEventListener("click", () => {
+    getContinentPreviews("africa");
+});
+const navEurope = document.getElementById("nav-europe");
+navEurope?.addEventListener("click", () => {
+    getContinentPreviews("europe");
+});
+const navNorthAmerica = document.getElementById("nav-americas");
+navNorthAmerica?.addEventListener("click", () => {
+    getContinentPreviews("americas");
+});
+const navOceania = document.getElementById("nav-oceania");
+navOceania?.addEventListener("click", () => {
+    getContinentPreviews("oceania");
+});
+const navAntarctica = document.getElementById("nav-antarctic");
+navAntarctica?.addEventListener("click", () => {
+    getContinentPreviews("antarctic");
+});
 btnHamburger?.addEventListener("click", () => {
     const isOpen = btnHamburger.classList.contains("menu-open") ? true : false;
     if (!isOpen) {
@@ -18,7 +47,7 @@ btnHamburger?.addEventListener("click", () => {
     btnHamburger.classList.replace("menu-open", "menu-closed");
 });
 //Function for displaying countries on homepage
-const displayCountryPreview = (country) => {
+const displayPreview = (country) => {
     //Setting parameters through input CountryPreview variable
     let flag = country.flag;
     let commonName = country.commonName;
@@ -57,7 +86,7 @@ const displayCountryPreview = (country) => {
         ?.classList.replace("hidden", "flex");
 };
 //Function for displaying all countries stores in the RESTCountries API.
-const getCountries = async () => {
+const displayCountries = async () => {
     const url = "https://restcountries.com/v3.1/all?fields=name,flags,region";
     try {
         const response = await fetch(url);
@@ -88,7 +117,7 @@ const getCountries = async () => {
         }
         const sortedData = gatheredData.sort((a, b) => a.commonName > b.commonName ? 1 : a.commonName < b.commonName ? -1 : 0);
         for (let sortedCountry of sortedData) {
-            displayCountryPreview(sortedCountry);
+            displayPreview(sortedCountry);
         }
     }
     catch (error) {
@@ -111,7 +140,7 @@ const getContinentPreviews = (continent) => {
 const getSearchPreview = async (query) => {
     const displayedCountries = document.getElementById("country-display-area")?.children;
     if (query.length === 0) {
-        getCountries();
+        displayCountries();
         return;
     }
     const searchResults = await combinedSearch(query);

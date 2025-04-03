@@ -66,54 +66,55 @@
         <ul
           class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around rounded bg-purple-600 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row lg:divide-x lg:rounded-none"
         >
-          <li id="nav-asia" class="px-2">
-            <a>Asia</a>
+          <li class="bg-inherit px-2">
+            <a href="results.html?continent=Asia">Asia</a>
           </li>
-          <li id="nav-africa" class="px-2">
-            <a>Africa</a>
+          <li class="px-2">
+            <a href="#">Africa</a>
           </li>
-          <li id="nav-europe" class="px-2">
-            <a>Europe</a>
+          <li class="px-2">
+            <a href="#">Europe</a>
           </li>
-          <li id="nav-americas" class="px-2">
-            <a>Americas</a>
+          <li class="px-2">
+            <a href="#">North America</a>
           </li>
-          <li id="nav-oceania" class="px-2">
-            <a>Oceania</a>
+          <li class="px-2">
+            <a href="#">South America</a>
           </li>
-          <li id="nav-antarctic" class="px-2">
-            <a>Antarctic</a>
+          <li class="px-2">
+            <a href="#">Australia/Oceania</a>
+          </li>
+          <li class="px-2">
+            <a href="#">Antarctica</a>
           </li>
         </ul>
       </div>
     </nav>
 
     <main
-      id="country-display-area"
-      class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+      class="m-4 grid grid-cols-1 border-4 border-red-400 text-white md:grid-cols-2"
     >
-      <div
-        id="country-template"
-        class="m-2 hidden flex-col items-center justify-between rounded border-2 bg-indigo-500/50 p-2 text-center"
-      >
-        <img
-          src="public/assets/placeholder-flag.webp"
-          alt="Flag placeholder image"
-          class="preview-flag max-h-48 rounded pb-4"
-          loading="lazy"
-        />
+      <div>
         <div>
-          <h1 class="preview-common-name text-2xl text-white">Country Name</h1>
-          <h2 class="preview-native-name text-xl text-white">
-            Native Country Name
-          </h2>
-          <h3 class="preview-continent text-lg text-white">Continent</h3>
-          <button
-            class="my-2 rounded bg-red-500 p-2 text-white transition-all hover:bg-red-600 active:translate-y-1 active:bg-red-700"
-          >
-            Learn More
-          </button>
+          <div>IMAGE HERE REMOVE DIV</div>
+          <p>Lorem.</p>
+          <p>Natus?</p>
         </div>
+      </div>
+      <div>
+        <article>
+          <p>Continent:</p>
+          <p>Capital:</p>
+          <p>Area:</p>
+          <p>Currency:</p>
+          <p>Population:</p>
+          <p>Language:</p>
+          <div class="flex flex-col justify-between sm:flex-row">
+            <p>Landlocked:</p>
+            <p>Independent:</p>
+            <p>UN Member:</p>
+          </div>
+        </article>
       </div>
     </main>
   </body>

@@ -12,6 +12,37 @@ if (formSearch) {
 
 const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
 
+document.addEventListener("DOMContentLoaded", (): void => {
+  if (document.location.pathname.endsWith("index.html")) {
+    displayCountries();
+  }
+});
+
+const navAsia = document.getElementById("nav-asia");
+navAsia?.addEventListener("click", () => {
+  getContinentPreviews("asia");
+});
+const navAfrica = document.getElementById("nav-africa");
+navAfrica?.addEventListener("click", () => {
+  getContinentPreviews("africa");
+});
+const navEurope = document.getElementById("nav-europe");
+navEurope?.addEventListener("click", () => {
+  getContinentPreviews("europe");
+});
+const navNorthAmerica = document.getElementById("nav-americas");
+navNorthAmerica?.addEventListener("click", () => {
+  getContinentPreviews("americas");
+});
+const navOceania = document.getElementById("nav-oceania");
+navOceania?.addEventListener("click", () => {
+  getContinentPreviews("oceania");
+});
+const navAntarctica = document.getElementById("nav-antarctic");
+navAntarctica?.addEventListener("click", () => {
+  getContinentPreviews("antarctic");
+});
+
 btnHamburger?.addEventListener("click", () => {
   const isOpen = btnHamburger.classList.contains("menu-open") ? true : false;
   if (!isOpen) {
@@ -30,7 +61,7 @@ type CountryPreview = {
 };
 
 //Function for displaying countries on homepage
-const displayCountryPreview = (country: CountryPreview) => {
+const displayPreview = (country: CountryPreview) => {
   //Setting parameters through input CountryPreview variable
   let flag: string = country.flag;
   let commonName: string = country.commonName;
@@ -81,7 +112,7 @@ const displayCountryPreview = (country: CountryPreview) => {
 };
 
 //Function for displaying all countries stores in the RESTCountries API.
-const getCountries = async () => {
+const displayCountries = async () => {
   const url: string =
     "https://restcountries.com/v3.1/all?fields=name,flags,region";
 
@@ -122,7 +153,7 @@ const getCountries = async () => {
       a.commonName > b.commonName ? 1 : a.commonName < b.commonName ? -1 : 0,
     );
     for (let sortedCountry of sortedData) {
-      displayCountryPreview(sortedCountry);
+      displayPreview(sortedCountry);
     }
   } catch (error) {
     console.error(error);
@@ -152,7 +183,7 @@ const getSearchPreview = async (query: string) => {
     "country-display-area",
   )?.children;
   if (query.length === 0) {
-    getCountries();
+    displayCountries();
     return;
   }
   const searchResults = await combinedSearch(query);
