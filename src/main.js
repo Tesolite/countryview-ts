@@ -124,6 +124,38 @@ const displayCountries = async () => {
         console.error(error);
     }
 };
+const detailedCountryInfo = async (country) => {
+    const url = `https://restcountries.com/v3.1/name/${country}?fields=coatOfArms,name,capital,area,currencies,population,languages,landlocked,independent,unMember,flags`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Error fetching country details. Status " + response.status);
+        }
+        console.log("data fetched");
+        const data = await response.json();
+        const countryData = data[0];
+        const nativeNameKey = Object.keys(countryData.name.nativeName)[0];
+        const nativeNameOfficial = countryData.name.nativeName[nativeNameKey].official;
+        const details = {
+            flag: countryData.flags.svg,
+            flagAlt: countryData.flags.alt,
+            coatofArms: countryData.coatOfArms.svg,
+            name: countryData.name.common,
+            nativeName: nativeNameOfficial,
+            capital: countryData.capital,
+            area: countryData.area,
+            currencies: countryData.currencies,
+            population: countryData.population,
+            languages: countryData.languages,
+            landlocked: countryData.landlocked,
+            independent: countryData.independent,
+            unMember: countryData.unMember,
+        };
+    }
+    catch (error) {
+        console.error(error);
+    }
+};
 const getContinentPreviews = (continent) => {
     const displayedCountries = document.getElementById("country-display-area")?.children;
     if (!displayedCountries)

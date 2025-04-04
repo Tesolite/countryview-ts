@@ -94,28 +94,42 @@
     <main
       class="m-4 grid grid-cols-1 border-4 border-red-400 text-white md:grid-cols-2"
     >
+      <div
+        class="col-span-1 m-4 flex flex-col justify-center text-center md:col-span-2"
+      >
+        <h1>Common Name</h1>
+        <h2>Native Name</h2>
+      </div>
       <div>
-        <div>
-          <div>IMAGE HERE REMOVE DIV</div>
+        <img
+          id="country-flag"
+          src="/public/assets/placeholder-flag.webp"
+          alt="Placeholder flag"
+        />
+        <img
+          id="country-coatofarms"
+          src="/public/assets/placeholder-flag.webp"
+          alt="Placeholder flag"
+        />
+
+        <div class="m-2 flex justify-center">
           <p>Lorem.</p>
           <p>Natus?</p>
         </div>
       </div>
-      <div>
-        <article>
-          <p>Continent:</p>
-          <p>Capital:</p>
-          <p>Area:</p>
-          <p>Currency:</p>
-          <p>Population:</p>
-          <p>Language:</p>
-          <div class="flex flex-col justify-between sm:flex-row">
-            <p>Landlocked:</p>
-            <p>Independent:</p>
-            <p>UN Member:</p>
-          </div>
-        </article>
-      </div>
+      <article id="country-info" class="ml-2 flex flex-col justify-around">
+        <p id="country-continent">Continent:</p>
+        <p id="country-capital">Capital:</p>
+        <p id="country-area">Area:</p>
+        <p id="country-currency">Currency:</p>
+        <p id="country-population">Population:</p>
+        <p id="country-language">Language:</p>
+        <div class="flex flex-col justify-between sm:flex-row">
+          <p id="country-islandlocked">Landlocked:</p>
+          <p id="country-isdependent">Independent:</p>
+          <p id="country-isun">UN Member:</p>
+        </div>
+      </article>
     </main>
   </body>
 </html>
