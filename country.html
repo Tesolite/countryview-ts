@@ -66,26 +66,38 @@
         <ul
           class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around rounded bg-purple-600 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row lg:divide-x lg:rounded-none"
         >
-          <li class="bg-inherit px-2">
-            <a href="results.html?continent=Asia">Asia</a>
+          <li id="nav-asia" class="px-2 transition-colors hover:bg-purple-700">
+            <button>Asia</button>
           </li>
-          <li class="px-2">
-            <a href="#">Africa</a>
+          <li
+            id="nav-africa"
+            class="rounded px-2 transition-colors hover:bg-purple-700"
+          >
+            <button>Africa</button>
           </li>
-          <li class="px-2">
-            <a href="#">Europe</a>
+          <li
+            id="nav-europe"
+            class="rounded px-2 transition-colors hover:bg-purple-700"
+          >
+            <button>Europe</button>
           </li>
-          <li class="px-2">
-            <a href="#">North America</a>
+          <li
+            id="nav-americas"
+            class="rounded px-2 transition-colors hover:bg-purple-700"
+          >
+            <button>Americas</button>
           </li>
-          <li class="px-2">
-            <a href="#">South America</a>
+          <li
+            id="nav-oceania"
+            class="rounded px-2 transition-colors hover:bg-purple-700"
+          >
+            <button>Oceania</button>
           </li>
-          <li class="px-2">
-            <a href="#">Australia/Oceania</a>
-          </li>
-          <li class="px-2">
-            <a href="#">Antarctica</a>
+          <li
+            id="nav-antarctic"
+            class="rounded px-2 transition-colors hover:bg-purple-700"
+          >
+            <button>Antarctic</button>
           </li>
         </ul>
       </div>
@@ -97,8 +109,8 @@
       <div
         class="col-span-1 m-4 flex flex-col justify-center text-center md:col-span-2"
       >
-        <h1>Common Name</h1>
-        <h2>Native Name</h2>
+        <h1 id="country-name-common">Common Name</h1>
+        <h2 id="country-name-native">Native Name</h2>
       </div>
       <div>
         <img
@@ -121,12 +133,12 @@
         <p id="country-continent">Continent:</p>
         <p id="country-capital">Capital:</p>
         <p id="country-area">Area:</p>
-        <p id="country-currency">Currency:</p>
+        <p id="country-currencies">Currencies:</p>
         <p id="country-population">Population:</p>
-        <p id="country-language">Language:</p>
+        <p id="country-languages">Languages:</p>
         <div class="flex flex-col justify-between sm:flex-row">
           <p id="country-islandlocked">Landlocked:</p>
-          <p id="country-isdependent">Independent:</p>
+          <p id="country-isindependent">Independent:</p>
           <p id="country-isun">UN Member:</p>
         </div>
       </article>

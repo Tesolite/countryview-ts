@@ -1362,9 +1362,6 @@
   .bg-indigo-500\/50 {
     background-color: color-mix(in oklab, var(--color-indigo-500) 50%, transparent);
   }
-  .bg-inherit {
-    background-color: inherit;
-  }
   .bg-purple-600 {
     background-color: var(--color-purple-600);
   }

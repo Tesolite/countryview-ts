@@ -1,4 +1,5 @@
-//TODO: MANAGE SEARCHES WITH 0 RESULTS
+//TODO: MANAGE SEARCHES WITH 0 RESULTS (SUCH AS SHOWING "NO RESULTS FOUND")
+//TODO: MAKE NAVBAR WORK EVEN OUT OF INDEX.HTML AKA USE URL PARAMETERS
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
   const inQuery: HTMLInputElement = document.getElementById(
@@ -30,17 +31,21 @@ const navEurope = document.getElementById("nav-europe");
 navEurope?.addEventListener("click", () => {
   getContinentPreviews("europe");
 });
-const navNorthAmerica = document.getElementById("nav-americas");
+const navNorthAmerica = document.getElementById("nav-northamerica");
 navNorthAmerica?.addEventListener("click", () => {
-  getContinentPreviews("americas");
+  getContinentPreviews("north america");
+});
+const navSouthAmerica = document.getElementById("nav-southamerica");
+navSouthAmerica?.addEventListener("click", () => {
+  getContinentPreviews("south america");
 });
 const navOceania = document.getElementById("nav-oceania");
 navOceania?.addEventListener("click", () => {
   getContinentPreviews("oceania");
 });
-const navAntarctica = document.getElementById("nav-antarctic");
+const navAntarctica = document.getElementById("nav-antarctica");
 navAntarctica?.addEventListener("click", () => {
-  getContinentPreviews("antarctic");
+  getContinentPreviews("antarctica");
 });
 
 btnHamburger?.addEventListener("click", () => {
@@ -51,37 +56,49 @@ btnHamburger?.addEventListener("click", () => {
   }
   btnHamburger.classList.replace("menu-open", "menu-closed");
 });
+//type for displaying countries on homepage
+type CountryPreview = {
+  flag: string;
+  commonName: string;
+  nativeName: string;
+  continents: string[];
+};
 
 type CountryDetails = {
   flag: string;
   flagAlt: string;
-  coatofArms: string;
+  coatOfArms: string;
   name: string;
   nativeName: string;
+  continents: string[];
   capital: string;
   area: number;
-  currencies: string[];
+  currencies: { name: string; symbol: string }[];
   population: number;
   languages: string[];
   landlocked: boolean;
   independent: boolean;
   unMember: boolean;
 };
-//type for displaying countries on homepage
-type CountryPreview = {
-  flag: string;
-  commonName: string;
-  nativeName: string;
-  continent: string;
+
+type DetailsResponse = DetailsSuccess | DetailsFail;
+
+type DetailsSuccess = {
+  success: true;
+  data: CountryDetails;
 };
 
+type DetailsFail = {
+  success: false;
+  message: Error;
+};
 //Function for displaying countries on homepage
 const displayPreview = (country: CountryPreview) => {
   //Setting parameters through input CountryPreview variable
   let flag: string = country.flag;
   let commonName: string = country.commonName;
   let nativeName: string = country.nativeName;
-  let continent: string = country.continent;
+  let continents: string[] = country.continents;
 
   //Setting references to country display and grid templates.
   const template = document.getElementById("country-template");
@@ -116,7 +133,13 @@ const displayPreview = (country: CountryPreview) => {
     nativeNameSelector.textContent = nativeName;
   }
   if (continentSelector) {
-    continentSelector.textContent = continent;
+    let continentText = "";
+    for (let continent of continents) {
+      continentText += ` ${continent},`;
+    }
+    //Trim whitespaces and remove comma.
+    continentText = continentText.trimEnd().slice(0, -1);
+    continentSelector.textContent = continentText;
   }
 
   //Appending populated country display into the displayed grid.
@@ -129,7 +152,7 @@ const displayPreview = (country: CountryPreview) => {
 //Function for displaying all countries stores in the RESTCountries API.
 const displayCountries = async () => {
   const url: string =
-    "https://restcountries.com/v3.1/all?fields=name,flags,region";
+    "https://restcountries.com/v3.1/all?fields=name,flags,region,continents";
 
   try {
     const response = await fetch(url);
@@ -159,7 +182,7 @@ const displayCountries = async () => {
         flag: country.flags.svg,
         commonName: country.name.common,
         nativeName: findNativeName,
-        continent: country.region,
+        continents: country.continents,
       };
       gatheredData.push(preview);
     }
@@ -175,8 +198,102 @@ const displayCountries = async () => {
   }
 };
 
-const detailedCountryInfo = async (country: string): Promise<void> => {
-  const url = `https://restcountries.com/v3.1/name/${country}?fields=coatOfArms,name,capital,area,currencies,population,languages,landlocked,independent,unMember,flags`;
+const displayCountryInfo = async (country: string): Promise<void> => {
+  const countryInfo: DetailsResponse = await detailedCountryInfo(country);
+
+  if (!countryInfo.success) {
+    console.error(countryInfo.message);
+    return;
+  }
+  const data = countryInfo.data;
+
+  const commonName = document.getElementById(
+    "country-name-common",
+  ) as HTMLHeadingElement | null;
+  const nativeName = document.getElementById(
+    "country-name-native",
+  ) as HTMLHeadingElement | null;
+  const flag = document.getElementById(
+    "country-flag",
+  ) as HTMLImageElement | null;
+  const coatOfArms = document.getElementById(
+    "country-coatofarms",
+  ) as HTMLImageElement | null;
+  const continents = document.getElementById(
+    "country-continent",
+  ) as HTMLParagraphElement | null;
+  const capital = document.getElementById(
+    "country-capital",
+  ) as HTMLParagraphElement | null;
+  const area = document.getElementById(
+    "country-area",
+  ) as HTMLParagraphElement | null;
+  const currencies = document.getElementById(
+    "country-currencies",
+  ) as HTMLParagraphElement | null;
+  const population = document.getElementById(
+    "country-population",
+  ) as HTMLParagraphElement | null;
+  const languages = document.getElementById(
+    "country-languages",
+  ) as HTMLParagraphElement | null;
+  // idk if landlocked, independent, and UN need to be declared here or if I make an svg tag after them
+  if (commonName) {
+    commonName.textContent = data.name;
+  }
+  if (nativeName) {
+    nativeName.textContent = data.nativeName;
+  }
+  if (flag) {
+    flag.src = data.flag;
+    flag.alt = data.flagAlt;
+  }
+  if (coatOfArms) {
+    coatOfArms.src = data.coatOfArms;
+  }
+  //THIS IS JUST A BANDAID FIX FOR NOW, FIX IT LATER
+  if (continents && continents.textContent) {
+    for (let continent of data.continents) {
+      continents.textContent += ` ${continent},`;
+    }
+    continents.textContent = continents.textContent.trimEnd().slice(0, -1);
+  }
+
+  if (capital) {
+    capital.textContent += ` ${data.capital}`;
+  }
+
+  if (area) {
+    area.textContent += ` ${data.area.toLocaleString()}km\u00B2`;
+  }
+  //ALSO BANDAID FIX
+  if (currencies && currencies.textContent) {
+    for (let currency of data.currencies) {
+      const currencyName = currency.name;
+      const currencySymbol = currency.symbol;
+
+      currencies.textContent += ` ${currencyName} (${currencySymbol}),`;
+    }
+    currencies.textContent = currencies.textContent.trim().slice(0, -1);
+  }
+  if (population) {
+    population.textContent += ` ${data.population.toLocaleString()}`;
+  }
+  //BANDAID FIX HERE TOO
+  if (languages && languages.textContent) {
+    for (let language of data.languages) {
+      languages.textContent += ` ${language},`;
+    }
+    languages.textContent = languages.textContent.trim().slice(0, -1);
+  }
+
+  //MANAGE LANDLOCK, INDEPENDENT, AND UN HERE
+};
+
+const detailedCountryInfo = async (
+  country: string,
+): Promise<DetailsResponse> => {
+  const url = `https://restcountries.com/v3.1/name/${country}?fields=coatOfArms,name,continents,capital,area,currencies,population,languages,landlocked,independent,unMember,flags&fullText=true`;
 
   try {
     const response = await fetch(url);
@@ -187,31 +304,42 @@ const detailedCountryInfo = async (country: string): Promise<void> => {
       );
     }
 
-    console.log("data fetched");
     const data = await response.json();
+    if (!data[0]) {
+      throw new Error("Missing country data");
+    }
     const countryData = data[0];
 
-    const nativeNameKey: string = Object.keys(countryData.name.nativeName)[0];
-    const nativeNameOfficial =
-      countryData.name.nativeName[nativeNameKey].official;
+    let nativeNameKey: string = "";
+    if (Object.keys(countryData.name.nativeName)[0]) {
+      nativeNameKey = Object.keys(countryData.name.nativeName)[0];
+    }
+
+    let nativeNameOfficial = countryData.name.official;
+    if (nativeNameKey.length > 0) {
+      nativeNameOfficial = countryData.name.nativeName[nativeNameKey].official;
+    }
 
     const details: CountryDetails = {
       flag: countryData.flags.svg,
       flagAlt: countryData.flags.alt,
-      coatofArms: countryData.coatOfArms.svg,
+      coatOfArms: countryData.coatOfArms.svg,
       name: countryData.name.common,
       nativeName: nativeNameOfficial,
+      continents: countryData.continents,
       capital: countryData.capital,
       area: countryData.area,
-      currencies: countryData.currencies,
+      currencies: Object.values(countryData.currencies),
       population: countryData.population,
-      languages: countryData.languages,
+      languages: Object.values(countryData.languages),
       landlocked: countryData.landlocked,
       independent: countryData.independent,
       unMember: countryData.unMember,
     };
+    return { success: true, data: details };
   } catch (error) {
     console.error(error);
+    return { success: false, message: error as Error };
   }
 };
 
@@ -226,7 +354,7 @@ const getContinentPreviews = (continent: string) => {
       country.id,
       "continent",
     ) as string;
-    if (countryContinent.toLowerCase() !== continent.toLowerCase()) {
+    if (!countryContinent.toLowerCase().includes(continent.toLowerCase())) {
       country.classList.replace("flex", "hidden");
       continue;
     }
