@@ -1,11 +1,15 @@
 //TODO: MANAGE SEARCHES WITH 0 RESULTS (SUCH AS SHOWING "NO RESULTS FOUND")
 //TODO: MAKE NAVBAR WORK EVEN OUT OF INDEX.HTML AKA USE URL PARAMETERS
+let originURL = new URL(document.location.origin);
+let countryInfoURL = new URL(document.location.origin + "/country.html");
 
-const isHomepage =
+const isHomePage =
   window.location.pathname === "/" || window.location.pathname === "/index.html"
     ? true
     : false;
-let originURL = new URL(document.location.origin);
+
+const isCountryInfoPage =
+  window.location.pathname === "/country.html" ? true : false;
 
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
@@ -17,7 +21,7 @@ if (formSearch) {
     originURL.searchParams.delete("continent");
     originURL.searchParams.set("search", inQuery.value);
 
-    if (isHomepage) {
+    if (isHomePage) {
       getSearchPreview(inQuery.value);
       const currentURL = new URL(window.location.href);
       currentURL.searchParams.set("search", inQuery.value);
@@ -31,8 +35,12 @@ if (formSearch) {
 const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
 
 document.addEventListener("DOMContentLoaded", (): void => {
-  if (isHomepage) {
+  if (isHomePage) {
     displayCountries();
+  }
+
+  if (isCountryInfoPage) {
+    CheckURLParameters(new URL(window.location.href));
   }
 });
 
@@ -58,7 +66,7 @@ for (let navContinent of navContinents) {
 const handleNavClick = (continent: string): void => {
   originURL.searchParams.delete("search");
   originURL.searchParams.set("continent", continent);
-  if (isHomepage) {
+  if (isHomePage) {
     getContinentPreviews(continent);
     const currentURL = new URL(window.location.href);
     currentURL.searchParams.set("continent", continent);
@@ -66,6 +74,11 @@ const handleNavClick = (continent: string): void => {
   } else {
     window.open(originURL, "_self");
   }
+};
+
+const handleInfoButtonClick = (country: string): void => {
+  countryInfoURL.searchParams.set("country", country);
+  window.location.href = countryInfoURL.toString();
 };
 
 btnHamburger?.addEventListener("click", () => {
@@ -183,7 +196,9 @@ const displayPreview = (country: CountryPreview) => {
   //Cloning the template and filling it with passed data
   let populatedTemplate = template.cloneNode(true) as HTMLDivElement;
 
-  populatedTemplate.id = commonName.toLowerCase().replaceAll(" ", "-");
+  const cardID = commonName.toLowerCase().replaceAll(" ", "-");
+
+  populatedTemplate.id = cardID;
 
   let previewFlag: HTMLImageElement | null =
     populatedTemplate.querySelector(".preview-flag");
@@ -193,6 +208,17 @@ const displayPreview = (country: CountryPreview) => {
     populatedTemplate.querySelector(".preview-native-name");
   let continentSelector: HTMLHeadingElement | null =
     populatedTemplate.querySelector(".preview-continent");
+
+  //Select button from the template (4th element on 2nd half of the card)
+  let btnCountryDetails = populatedTemplate.children[1]
+    .children[3] as HTMLButtonElement;
+
+  if (btnCountryDetails) {
+    btnCountryDetails.id = `btn-info-${cardID}`;
+    btnCountryDetails.addEventListener("click", () => {
+      handleInfoButtonClick(commonName);
+    });
+  }
 
   if (previewFlag) {
     previewFlag.src = flag;
@@ -222,6 +248,7 @@ const displayPreview = (country: CountryPreview) => {
 
 const CheckURLParameters = (url: URL) => {
   const continentParam = url.searchParams.get("continent");
+  const countryParam = url.searchParams.get("country");
   const userSearchParam = url.searchParams.get("search");
   if (userSearchParam) {
     getSearchPreview(userSearchParam);
@@ -229,7 +256,9 @@ const CheckURLParameters = (url: URL) => {
   }
   if (continentParam) {
     getContinentPreviews(continentParam);
-    console.log("foo");
+  }
+  if (countryParam) {
+    displayCountryInfo(countryParam);
   }
 };
 

@@ -1,10 +1,12 @@
 "use strict";
 //TODO: MANAGE SEARCHES WITH 0 RESULTS (SUCH AS SHOWING "NO RESULTS FOUND")
 //TODO: MAKE NAVBAR WORK EVEN OUT OF INDEX.HTML AKA USE URL PARAMETERS
-const isHomepage = window.location.pathname === "/" || window.location.pathname === "/index.html"
+let originURL = new URL(document.location.origin);
+let countryInfoURL = new URL(document.location.origin + "/country.html");
+const isHomePage = window.location.pathname === "/" || window.location.pathname === "/index.html"
     ? true
     : false;
-let originURL = new URL(document.location.origin);
+const isCountryInfoPage = window.location.pathname === "/country.html" ? true : false;
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
     const inQuery = document.getElementById("search-country");
@@ -12,7 +14,7 @@ if (formSearch) {
         event.preventDefault();
         originURL.searchParams.delete("continent");
         originURL.searchParams.set("search", inQuery.value);
-        if (isHomepage) {
+        if (isHomePage) {
             getSearchPreview(inQuery.value);
             const currentURL = new URL(window.location.href);
             currentURL.searchParams.set("search", inQuery.value);
@@ -25,8 +27,11 @@ if (formSearch) {
 }
 const btnHamburger = document.getElementById("btn-burger");
 document.addEventListener("DOMContentLoaded", () => {
-    if (isHomepage) {
+    if (isHomePage) {
         displayCountries();
+    }
+    if (isCountryInfoPage) {
+        CheckURLParameters(new URL(window.location.href));
     }
 });
 //Navbar click event handling
@@ -50,7 +55,7 @@ for (let navContinent of navContinents) {
 const handleNavClick = (continent) => {
     originURL.searchParams.delete("search");
     originURL.searchParams.set("continent", continent);
-    if (isHomepage) {
+    if (isHomePage) {
         getContinentPreviews(continent);
         const currentURL = new URL(window.location.href);
         currentURL.searchParams.set("continent", continent);
@@ -59,6 +64,10 @@ const handleNavClick = (continent) => {
     else {
         window.open(originURL, "_self");
     }
+};
+const handleInfoButtonClick = (country) => {
+    countryInfoURL.searchParams.set("country", country);
+    window.location.href = countryInfoURL.toString();
 };
 btnHamburger?.addEventListener("click", () => {
     const isOpen = btnHamburger.classList.contains("menu-open") ? true : false;
@@ -124,11 +133,21 @@ const displayPreview = (country) => {
         return;
     //Cloning the template and filling it with passed data
     let populatedTemplate = template.cloneNode(true);
-    populatedTemplate.id = commonName.toLowerCase().replaceAll(" ", "-");
+    const cardID = commonName.toLowerCase().replaceAll(" ", "-");
+    populatedTemplate.id = cardID;
     let previewFlag = populatedTemplate.querySelector(".preview-flag");
     let commonNameSelector = populatedTemplate.querySelector(".preview-common-name");
     let nativeNameSelector = populatedTemplate.querySelector(".preview-native-name");
     let continentSelector = populatedTemplate.querySelector(".preview-continent");
+    //Select button from the template (4th element on 2nd half of the card)
+    let btnCountryDetails = populatedTemplate.children[1]
+        .children[3];
+    if (btnCountryDetails) {
+        btnCountryDetails.id = `btn-info-${cardID}`;
+        btnCountryDetails.addEventListener("click", () => {
+            handleInfoButtonClick(commonName);
+        });
+    }
     if (previewFlag) {
         previewFlag.src = flag;
     }
@@ -155,6 +174,7 @@ const displayPreview = (country) => {
 };
 const CheckURLParameters = (url) => {
     const continentParam = url.searchParams.get("continent");
+    const countryParam = url.searchParams.get("country");
     const userSearchParam = url.searchParams.get("search");
     if (userSearchParam) {
         getSearchPreview(userSearchParam);
@@ -162,7 +182,9 @@ const CheckURLParameters = (url) => {
     }
     if (continentParam) {
         getContinentPreviews(continentParam);
-        console.log("foo");
+    }
+    if (countryParam) {
+        displayCountryInfo(countryParam);
     }
 };
 const displayCountryInfo = async (country) => {
