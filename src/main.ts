@@ -1,5 +1,12 @@
 //TODO: MANAGE SEARCHES WITH 0 RESULTS (SUCH AS SHOWING "NO RESULTS FOUND")
 //TODO: MAKE NAVBAR WORK EVEN OUT OF INDEX.HTML AKA USE URL PARAMETERS
+
+const isHomepage =
+  window.location.pathname === "/" || window.location.pathname === "/index.html"
+    ? true
+    : false;
+let originURL = new URL(document.location.origin);
+
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
   const inQuery: HTMLInputElement = document.getElementById(
@@ -7,46 +14,59 @@ if (formSearch) {
   ) as HTMLInputElement;
   formSearch.onsubmit = (event) => {
     event.preventDefault();
-    getSearchPreview(inQuery.value);
+    originURL.searchParams.delete("continent");
+    originURL.searchParams.set("search", inQuery.value);
+
+    if (isHomepage) {
+      getSearchPreview(inQuery.value);
+      const currentURL = new URL(window.location.href);
+      currentURL.searchParams.set("search", inQuery.value);
+      window.history.replaceState(null, "", currentURL);
+    } else {
+      window.open(originURL, "_self");
+    }
   };
 }
 
 const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
 
 document.addEventListener("DOMContentLoaded", (): void => {
-  if (document.location.pathname.endsWith("index.html")) {
+  if (isHomepage) {
     displayCountries();
   }
 });
 
-const navAsia = document.getElementById("nav-asia");
-navAsia?.addEventListener("click", () => {
-  getContinentPreviews("asia");
-});
-const navAfrica = document.getElementById("nav-africa");
-navAfrica?.addEventListener("click", () => {
-  getContinentPreviews("africa");
-});
-const navEurope = document.getElementById("nav-europe");
-navEurope?.addEventListener("click", () => {
-  getContinentPreviews("europe");
-});
-const navNorthAmerica = document.getElementById("nav-northamerica");
-navNorthAmerica?.addEventListener("click", () => {
-  getContinentPreviews("north america");
-});
-const navSouthAmerica = document.getElementById("nav-southamerica");
-navSouthAmerica?.addEventListener("click", () => {
-  getContinentPreviews("south america");
-});
-const navOceania = document.getElementById("nav-oceania");
-navOceania?.addEventListener("click", () => {
-  getContinentPreviews("oceania");
-});
-const navAntarctica = document.getElementById("nav-antarctica");
-navAntarctica?.addEventListener("click", () => {
-  getContinentPreviews("antarctica");
-});
+//Navbar click event handling
+const navContinents = [
+  { id: "nav-asia", name: "asia" },
+  { id: "nav-africa", name: "africa" },
+  { id: "nav-europe", name: "europe" },
+  { id: "nav-northamerica", name: "north america" },
+  { id: "nav-southamerica", name: "south america" },
+  { id: "nav-oceania", name: "oceania" },
+  { id: "nav-antarctica", name: "antarctica" },
+];
+
+for (let navContinent of navContinents) {
+  const continentPointer = document.getElementById(navContinent.id);
+  if (!continentPointer) continue;
+  continentPointer.addEventListener("click", () => {
+    handleNavClick(navContinent.name);
+  });
+}
+
+const handleNavClick = (continent: string): void => {
+  originURL.searchParams.delete("search");
+  originURL.searchParams.set("continent", continent);
+  if (isHomepage) {
+    getContinentPreviews(continent);
+    const currentURL = new URL(window.location.href);
+    currentURL.searchParams.set("continent", continent);
+    window.history.replaceState(null, "", currentURL);
+  } else {
+    window.open(originURL, "_self");
+  }
+};
 
 btnHamburger?.addEventListener("click", () => {
   const isOpen = btnHamburger.classList.contains("menu-open") ? true : false;
@@ -92,6 +112,57 @@ type DetailsFail = {
   success: false;
   message: Error;
 };
+
+//Function for displaying all countries stores in the RESTCountries API.
+const displayCountries = async () => {
+  const url: string =
+    "https://restcountries.com/v3.1/all?fields=name,flags,region,continents";
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Error fetching country data. Status " + response.status);
+    }
+
+    const data = await response.json();
+    const gatheredData: CountryPreview[] = [];
+
+    //Iterate through each country in the JSON of the fetched API
+    for (let country of data) {
+      //Traverse the JSON to object containing native names and choose first available option
+      //If none available, common name will be displayed as the native name.
+      let findNativeName = country.name.common;
+      if (country.name.nativeName) {
+        const values: any[] | undefined | null = Object.values(
+          country.name.nativeName,
+        );
+        if (values[0]) {
+          findNativeName = values[0].common;
+        }
+      }
+      //Save values to CountryPreview type and push into array
+      let preview: CountryPreview = {
+        flag: country.flags.svg,
+        commonName: country.name.common,
+        nativeName: findNativeName,
+        continents: country.continents,
+      };
+      gatheredData.push(preview);
+    }
+
+    const sortedData: CountryPreview[] = gatheredData.sort((a, b) =>
+      a.commonName > b.commonName ? 1 : a.commonName < b.commonName ? -1 : 0,
+    );
+    for (let sortedCountry of sortedData) {
+      displayPreview(sortedCountry);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  CheckURLParameters(new URL(window.location.href));
+};
+
 //Function for displaying countries on homepage
 const displayPreview = (country: CountryPreview) => {
   //Setting parameters through input CountryPreview variable
@@ -149,52 +220,16 @@ const displayPreview = (country: CountryPreview) => {
     ?.classList.replace("hidden", "flex");
 };
 
-//Function for displaying all countries stores in the RESTCountries API.
-const displayCountries = async () => {
-  const url: string =
-    "https://restcountries.com/v3.1/all?fields=name,flags,region,continents";
-
-  try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Error fetching country data. Status " + response.status);
-    }
-
-    const data = await response.json();
-    const gatheredData: CountryPreview[] = [];
-
-    //Iterate through each country in the JSON of the fetched API
-    for (let country of data) {
-      //Traverse the JSON to object containing native names and choose first available option
-      //If none available, common name will be displayed as the native name.
-      let findNativeName = country.name.common;
-      if (country.name.nativeName) {
-        const values: any[] | undefined | null = Object.values(
-          country.name.nativeName,
-        );
-        if (values[0]) {
-          findNativeName = values[0].common;
-        }
-      }
-      //Save values to CountryPreview type and push into array
-      let preview: CountryPreview = {
-        flag: country.flags.svg,
-        commonName: country.name.common,
-        nativeName: findNativeName,
-        continents: country.continents,
-      };
-      gatheredData.push(preview);
-    }
-
-    const sortedData: CountryPreview[] = gatheredData.sort((a, b) =>
-      a.commonName > b.commonName ? 1 : a.commonName < b.commonName ? -1 : 0,
-    );
-    for (let sortedCountry of sortedData) {
-      displayPreview(sortedCountry);
-    }
-  } catch (error) {
-    console.error(error);
+const CheckURLParameters = (url: URL) => {
+  const continentParam = url.searchParams.get("continent");
+  const userSearchParam = url.searchParams.get("search");
+  if (userSearchParam) {
+    getSearchPreview(userSearchParam);
+    return;
+  }
+  if (continentParam) {
+    getContinentPreviews(continentParam);
+    console.log("foo");
   }
 };
 
@@ -251,7 +286,6 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   if (coatOfArms) {
     coatOfArms.src = data.coatOfArms;
   }
-  //THIS IS JUST A BANDAID FIX FOR NOW, FIX IT LATER
   if (continents && continents.textContent) {
     for (let continent of data.continents) {
       continents.textContent += ` ${continent},`;
@@ -266,7 +300,6 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   if (area) {
     area.textContent += ` ${data.area.toLocaleString()}km\u00B2`;
   }
-  //ALSO BANDAID FIX
   if (currencies && currencies.textContent) {
     for (let currency of data.currencies) {
       const currencyName = currency.name;
@@ -279,7 +312,6 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   if (population) {
     population.textContent += ` ${data.population.toLocaleString()}`;
   }
-  //BANDAID FIX HERE TOO
   if (languages && languages.textContent) {
     for (let language of data.languages) {
       languages.textContent += ` ${language},`;
