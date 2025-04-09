@@ -13,6 +13,7 @@
       <div class="flex items-center justify-between p-2">
         <a href="index.html">
           <img
+            loading="lazy"
             class="w-48"
             src="public/assets/logo-placeholder.png"
             alt="Country Viewer Logo"
@@ -55,6 +56,7 @@
             />
             <button id="btn-submit-search" type="submit">
               <img
+                loading="lazy"
                 src="public/assets/search-icon.svg"
                 alt="Country search icon"
                 class="size-fit"
@@ -118,21 +120,31 @@
         <h1 id="country-name-common">Common Name</h1>
         <h2 id="country-name-native">Native Name</h2>
       </div>
-      <div>
-        <img
-          id="country-flag"
-          src="/public/assets/placeholder-flag.webp"
-          alt="Placeholder flag"
-        />
-        <img
-          id="country-coatofarms"
-          src="/public/assets/placeholder-flag.webp"
-          alt="Placeholder flag"
-        />
+      <div class="flex flex-col justify-center">
+        <div class="flex min-h-80 flex-col justify-center">
+          <img
+            loading="lazy"
+            id="country-flag"
+            src="/public/assets/placeholder-flag.webp"
+            alt="Placeholder flag"
+            class="block max-h-80 object-contain"
+          />
+          <img
+            loading="lazy"
+            id="country-coatofarms"
+            src="/public/assets/placeholder-flag.webp"
+            alt="Placeholder flag"
+            class="hidden max-h-80 object-contain"
+          />
+        </div>
 
-        <div class="m-2 flex justify-center">
-          <p>Lorem.</p>
-          <p>Natus?</p>
+        <div class="m-2 flex justify-center gap-1">
+          <button id="btn-show-flag" class="rounded border-2 p-2 px-4">
+            Flag
+          </button>
+          <button id="btn-show-coatofarms" class="rounded border-2 p-2 px-4">
+            Coat of arms
+          </button>
         </div>
       </div>
       <article id="country-info" class="ml-2 flex flex-col justify-around">

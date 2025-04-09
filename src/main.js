@@ -1,6 +1,5 @@
 "use strict";
 //TODO: MANAGE SEARCHES WITH 0 RESULTS (SUCH AS SHOWING "NO RESULTS FOUND")
-//TODO: MAKE NAVBAR WORK EVEN OUT OF INDEX.HTML AKA USE URL PARAMETERS
 let originURL = new URL(document.location.origin);
 let countryInfoURL = new URL(document.location.origin + "/country.html");
 const isHomePage = window.location.pathname === "/" || window.location.pathname === "/index.html"
@@ -76,6 +75,18 @@ btnHamburger?.addEventListener("click", () => {
         return;
     }
     btnHamburger.classList.replace("menu-open", "menu-closed");
+});
+const countryInfoFlag = document.getElementById("country-flag");
+const countryInfoCoatOfArms = document.getElementById("country-coatofarms");
+const btnShowFlag = document.getElementById("btn-show-flag");
+btnShowFlag?.addEventListener("click", () => {
+    countryInfoCoatOfArms?.classList.replace("block", "hidden");
+    countryInfoFlag?.classList.replace("hidden", "block");
+});
+const btnShowCoatOfArms = document.getElementById("btn-show-coatofarms");
+btnShowCoatOfArms?.addEventListener("click", () => {
+    countryInfoFlag?.classList.replace("block", "hidden");
+    countryInfoCoatOfArms?.classList.replace("hidden", "block");
 });
 //Function for displaying all countries stores in the RESTCountries API.
 const displayCountries = async () => {
