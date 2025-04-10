@@ -23,7 +23,7 @@
       </div>
     </header>
     <nav
-      class="sticky top-0 bg-green-700 p-4 inset-shadow-sm inset-shadow-green-800"
+      class="sticky top-0 z-1 bg-green-700 p-4 inset-shadow-sm inset-shadow-green-800"
     >
       <div class="flex items-center justify-between">
         <button
@@ -118,27 +118,25 @@
 
     <main
       id="country-display-area"
-      class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+      class="m-2 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
     >
       <div
         id="country-template"
-        class="m-2 hidden flex-col items-center justify-between rounded border-2 bg-green-800 p-2 text-center"
+        class="transition-transformjustify-between m-2 hidden flex-col items-center rounded border-2 border-black/5 bg-emerald-900/5 p-2 text-center shadow-2xs shadow-black/10 hover:scale-105 hover:bg-emerald-900/20"
       >
         <img
           loading="lazy"
           src="public/assets/placeholder-flag.webp"
           alt="Flag placeholder image"
-          class="preview-flag m-auto max-h-48 rounded border-2"
+          class="preview-flag m-auto max-h-48 rounded"
         />
         <div>
-          <h1 class="preview-common-name text-2xl text-white">Country Name</h1>
-          <h2 class="preview-native-name text-xl text-white">
-            Native Country Name
-          </h2>
-          <h3 class="preview-continent text-lg text-white">Continent</h3>
+          <h1 class="preview-common-name text-2xl">Country Name</h1>
+          <h2 class="preview-native-name text-xl">Native Country Name</h2>
+          <h3 class="preview-continent text-lg">Continent</h3>
           <button
             id="btn-details"
-            class="my-2 rounded bg-red-500 p-2 text-white transition-all hover:bg-red-600 active:translate-y-1 active:bg-red-700"
+            class="my-2 rounded bg-red-500 p-2 transition-all hover:bg-red-600 active:translate-y-1 active:bg-red-700"
           >
             Learn More
           </button>
