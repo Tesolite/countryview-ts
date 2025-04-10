@@ -108,19 +108,24 @@ type CountryDetails = {
   currencies: { name: string; symbol: string }[];
   population: number;
   languages: string[];
-  landlocked: boolean;
-  independent: boolean;
-  unMember: boolean;
+  isLandlocked: boolean;
+  isIndependent: boolean;
+  isUNMember: boolean;
 };
 const countryInfoFlag = document.getElementById("country-flag");
 const countryInfoCoatOfArms = document.getElementById("country-coatofarms");
-const btnShowFlag = document.getElementById("btn-show-flag");
 
+const btnShowFlag = document.getElementById(
+  "btn-show-flag",
+) as HTMLButtonElement;
 btnShowFlag?.addEventListener("click", () => {
   countryInfoCoatOfArms?.classList.replace("block", "hidden");
   countryInfoFlag?.classList.replace("hidden", "block");
 });
-const btnShowCoatOfArms = document.getElementById("btn-show-coatofarms");
+
+const btnShowCoatOfArms = document.getElementById(
+  "btn-show-coatofarms",
+) as HTMLButtonElement;
 btnShowCoatOfArms?.addEventListener("click", () => {
   countryInfoFlag?.classList.replace("block", "hidden");
   countryInfoCoatOfArms?.classList.replace("hidden", "block");
@@ -312,7 +317,29 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   const languages = document.getElementById(
     "country-languages",
   ) as HTMLParagraphElement | null;
-  // idk if landlocked, independent, and UN need to be declared here or if I make an svg tag after them
+
+  //Landlock SVGs
+  const svgLandlocked = document.getElementById("svg-landlocked");
+  const landlockedUnknown = document.getElementById(
+    "svgpath-landlocked-unknown",
+  );
+  const landlockedTrue = document.getElementById("svgpath-landlocked-true");
+  const landlockedFalse = document.getElementById("svgpath-landlocked-false");
+
+  //Independence SVGs
+  const svgIndependent = document.getElementById("svg-independent");
+  const independentUnknown = document.getElementById(
+    "svgpath-independent-unknown",
+  );
+  const independentTrue = document.getElementById("svgpath-independent-true");
+  const independentFalse = document.getElementById("svgpath-independent-false");
+
+  //UN Member SVGs
+  const svgUNMember = document.getElementById("svg-unmember");
+  const unMemberUnknown = document.getElementById("svgpath-unmember-unknown");
+  const unMemberTrue = document.getElementById("svgpath-unmember-true");
+  const unMemberFalse = document.getElementById("svgpath-unmember-false");
+
   if (commonName) {
     commonName.textContent = data.name;
   }
@@ -323,8 +350,10 @@ const displayCountryInfo = async (country: string): Promise<void> => {
     flag.src = data.flag;
     flag.alt = data.flagAlt;
   }
-  if (coatOfArms) {
+  if (coatOfArms && data.coatOfArms) {
     coatOfArms.src = data.coatOfArms;
+  } else {
+    btnShowCoatOfArms.disabled = true;
   }
   if (continents && continents.textContent) {
     for (let continent of data.continents) {
@@ -359,7 +388,30 @@ const displayCountryInfo = async (country: string): Promise<void> => {
     languages.textContent = languages.textContent.trim().slice(0, -1);
   }
 
-  //MANAGE LANDLOCK, INDEPENDENT, AND UN HERE
+  if (svgLandlocked && data.isLandlocked !== undefined) {
+    landlockedUnknown?.classList.add("hidden");
+    if (data.isLandlocked) {
+      landlockedTrue?.classList.replace("hidden", "block");
+    } else {
+      landlockedFalse?.classList.replace("hidden", "block");
+    }
+  }
+  if (svgIndependent && data.isIndependent !== undefined) {
+    independentUnknown?.classList.add("hidden");
+    if (data.isIndependent) {
+      independentTrue?.classList.replace("hidden", "block");
+    } else {
+      independentFalse?.classList.replace("hidden", "block");
+    }
+  }
+  if (svgUNMember && data.isUNMember !== undefined) {
+    unMemberUnknown?.classList.add("hidden");
+    if (data.isUNMember) {
+      unMemberTrue?.classList.replace("hidden", "block");
+    } else {
+      unMemberFalse?.classList.replace("hidden", "block");
+    }
+  }
 };
 
 const detailedCountryInfo = async (
@@ -404,9 +456,9 @@ const detailedCountryInfo = async (
       currencies: Object.values(countryData.currencies),
       population: countryData.population,
       languages: Object.values(countryData.languages),
-      landlocked: countryData.landlocked,
-      independent: countryData.independent,
-      unMember: countryData.unMember,
+      isLandlocked: countryData.landlocked,
+      isIndependent: countryData.independent,
+      isUNMember: countryData.unMember,
     };
     return { success: true, data: details };
   } catch (error) {

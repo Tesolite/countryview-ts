@@ -8,8 +8,8 @@
     <script src="src/main.js" defer></script>
     <title>Country Viewer</title>
   </head>
-  <body class="bg-gray-900">
-    <header class="bg-red-700">
+  <body class="bg-[#D5F2E3]">
+    <header class="bg-green-800">
       <div class="flex items-center justify-between p-2">
         <a href="index.html">
           <img
@@ -22,7 +22,9 @@
         <p class="text-white">Light mode(?)</p>
       </div>
     </header>
-    <nav class="sticky top-0 bg-purple-600 p-4">
+    <nav
+      class="sticky top-0 bg-green-700 p-4 inset-shadow-sm inset-shadow-green-800"
+    >
       <div class="flex items-center justify-between">
         <button
           id="btn-burger"
@@ -66,44 +68,47 @@
         </div>
 
         <ul
-          class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around rounded bg-purple-600 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row lg:divide-x lg:rounded-none"
+          class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around rounded bg-green-700 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row lg:divide-x lg:rounded-none"
         >
-          <li id="nav-asia" class="px-2 transition-colors hover:bg-purple-700">
+          <li
+            id="nav-asia"
+            class="rounded px-2 py-2 transition-colors hover:bg-green-800 active:bg-emerald-900 lg:py-0"
+          >
             <button>Asia</button>
           </li>
           <li
             id="nav-africa"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-green-800 active:bg-emerald-900 lg:py-0"
           >
             <button>Africa</button>
           </li>
           <li
             id="nav-europe"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-green-800 active:bg-emerald-900 lg:py-0"
           >
             <button>Europe</button>
           </li>
           <li
             id="nav-northamerica"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-green-800 active:bg-emerald-900 lg:py-0"
           >
             <button>North America</button>
           </li>
           <li
             id="nav-southamerica"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-green-800 active:bg-emerald-900 lg:py-0"
           >
             <button>South America</button>
           </li>
           <li
             id="nav-oceania"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-green-800 active:bg-emerald-900 lg:py-0"
           >
             <button>Oceania</button>
           </li>
           <li
             id="nav-antarctica"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-green-800 active:bg-emerald-900 lg:py-0"
           >
             <button>Antarctica</button>
           </li>
@@ -117,7 +122,7 @@
     >
       <div
         id="country-template"
-        class="m-2 hidden flex-col items-center justify-between rounded border-2 bg-indigo-500/50 p-2 text-center"
+        class="m-2 hidden flex-col items-center justify-between rounded border-2 bg-[#F4A261]/30 p-2 text-center"
       >
         <img
           loading="lazy"
