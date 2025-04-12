@@ -91,6 +91,7 @@ btnHamburger?.addEventListener("click", () => {
 //type for displaying countries on homepage
 type CountryPreview = {
   flag: string;
+  flagAlt: string;
   commonName: string;
   nativeName: string;
   continents: string[];
@@ -100,7 +101,7 @@ type CountryDetails = {
   flag: string;
   flagAlt: string;
   coatOfArms: string;
-  name: string;
+  commonName: string;
   nativeName: string;
   continents: string[];
   capital: string;
@@ -173,6 +174,7 @@ const displayCountries = async () => {
       //Save values to CountryPreview type and push into array
       let preview: CountryPreview = {
         flag: country.flags.svg,
+        flagAlt: country.flags.alt,
         commonName: country.name.common,
         nativeName: findNativeName,
         continents: country.continents,
@@ -196,6 +198,7 @@ const displayCountries = async () => {
 const displayPreview = (country: CountryPreview) => {
   //Setting parameters through input CountryPreview variable
   let flag: string = country.flag;
+  let flagAlt: string = country.flagAlt;
   let commonName: string = country.commonName;
   let nativeName: string = country.nativeName;
   let continents: string[] = country.continents;
@@ -238,6 +241,7 @@ const displayPreview = (country: CountryPreview) => {
 
   if (previewFlag) {
     previewFlag.src = flag;
+    previewFlag.alt = flagAlt;
   }
   if (commonNameSelector) {
     commonNameSelector.textContent = commonName;
@@ -341,7 +345,7 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   const unMemberFalse = document.getElementById("svgpath-unmember-false");
 
   if (commonName) {
-    commonName.textContent = data.name;
+    commonName.textContent = data.commonName;
   }
   if (nativeName) {
     nativeName.textContent = data.nativeName;
@@ -448,7 +452,7 @@ const detailedCountryInfo = async (
       flag: countryData.flags.svg,
       flagAlt: countryData.flags.alt,
       coatOfArms: countryData.coatOfArms.svg,
-      name: countryData.name.common,
+      commonName: countryData.name.common,
       nativeName: nativeNameOfficial,
       continents: countryData.continents,
       capital: countryData.capital,

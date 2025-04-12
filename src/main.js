@@ -112,6 +112,7 @@ const displayCountries = async () => {
             //Save values to CountryPreview type and push into array
             let preview = {
                 flag: country.flags.svg,
+                flagAlt: country.flags.alt,
                 commonName: country.name.common,
                 nativeName: findNativeName,
                 continents: country.continents,
@@ -132,6 +133,7 @@ const displayCountries = async () => {
 const displayPreview = (country) => {
     //Setting parameters through input CountryPreview variable
     let flag = country.flag;
+    let flagAlt = country.flagAlt;
     let commonName = country.commonName;
     let nativeName = country.nativeName;
     let continents = country.continents;
@@ -161,6 +163,7 @@ const displayPreview = (country) => {
     }
     if (previewFlag) {
         previewFlag.src = flag;
+        previewFlag.alt = flagAlt;
     }
     if (commonNameSelector) {
         commonNameSelector.textContent = commonName;
@@ -231,7 +234,7 @@ const displayCountryInfo = async (country) => {
     const unMemberTrue = document.getElementById("svgpath-unmember-true");
     const unMemberFalse = document.getElementById("svgpath-unmember-false");
     if (commonName) {
-        commonName.textContent = data.name;
+        commonName.textContent = data.commonName;
     }
     if (nativeName) {
         nativeName.textContent = data.nativeName;
@@ -327,7 +330,7 @@ const detailedCountryInfo = async (country) => {
             flag: countryData.flags.svg,
             flagAlt: countryData.flags.alt,
             coatOfArms: countryData.coatOfArms.svg,
-            name: countryData.name.common,
+            commonName: countryData.name.common,
             nativeName: nativeNameOfficial,
             continents: countryData.continents,
             capital: countryData.capital,
