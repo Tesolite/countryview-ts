@@ -8,8 +8,8 @@
     <script src="src/main.js" defer></script>
     <title>Country Viewer</title>
   </head>
-  <body class="bg-[#D5F2E3]">
-    <header class="bg-emerald-900">
+  <body class="bg-[#D5F2E3] dark:bg-sky-950 dark:text-white">
+    <header class="bg-emerald-900 dark:bg-slate-900">
       <div class="flex items-center justify-between p-2">
         <a href="index.html">
           <img
@@ -19,11 +19,26 @@
             alt="Country Viewer Logo"
           />
         </a>
-        <p class="text-white">Light mode(?)</p>
+        <svg viewBox="0 0 30 30" class="mr-2 h-[30px] w-[30px]">
+          <circle
+            class="fill-yellow-300 dark:fill-white"
+            id="overlay"
+            r="15"
+            cx="15"
+            cy="15"
+          />
+          <circle
+            class="fill-slate-900 dark:-translate-x-[22px] dark:translate-y-[7px]"
+            id="overlay"
+            r="15"
+            cx="45"
+            cy="0"
+          />
+        </svg>
       </div>
     </header>
     <nav
-      class="sticky top-0 z-1 bg-emerald-800 p-4 inset-shadow-sm inset-shadow-emerald-900"
+      class="sticky top-0 z-1 bg-emerald-800 p-4 inset-shadow-sm inset-shadow-emerald-900 dark:bg-slate-800 dark:inset-shadow-slate-950"
     >
       <div class="flex items-center justify-between">
         <button
@@ -46,10 +61,11 @@
         <div class="flex flex-row">
           <a href="index.html" class="m-auto mr-2">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24px"
+              id="home-icon"
               viewBox="0 -960 960 960"
+              height="24px"
               width="24px"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 class="fill-white"
@@ -83,47 +99,47 @@
         </div>
 
         <ul
-          class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around rounded bg-emerald-800 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row lg:divide-x lg:rounded-none"
+          class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around rounded bg-emerald-800 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row lg:divide-x lg:rounded-none dark:bg-slate-800"
         >
           <li
             id="nav-asia"
-            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0 dark:hover:bg-slate-700 dark:active:bg-sky-700"
           >
             <button>Asia</button>
           </li>
           <li
             id="nav-africa"
-            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0 dark:hover:bg-slate-700 dark:active:bg-sky-700"
           >
             <button>Africa</button>
           </li>
           <li
             id="nav-europe"
-            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0 dark:hover:bg-slate-700 dark:active:bg-sky-700"
           >
             <button>Europe</button>
           </li>
           <li
             id="nav-northamerica"
-            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0 dark:hover:bg-slate-700 dark:active:bg-sky-700"
           >
             <button>North America</button>
           </li>
           <li
             id="nav-southamerica"
-            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0 dark:hover:bg-slate-700 dark:active:bg-sky-700"
           >
             <button>South America</button>
           </li>
           <li
             id="nav-oceania"
-            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0 dark:hover:bg-slate-700 dark:active:bg-sky-700"
           >
             <button>Oceania</button>
           </li>
           <li
             id="nav-antarctica"
-            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0 dark:hover:bg-slate-700 dark:active:bg-sky-700"
           >
             <button>Antarctica</button>
           </li>
@@ -161,13 +177,13 @@
         <div class="m-2 flex justify-center gap-1">
           <button
             id="btn-show-flag"
-            class="my-2 rounded bg-white/35 p-2 font-semibold shadow-md shadow-black/60 transition-all hover:bg-emerald-900 hover:text-white active:scale-105 active:bg-cyan-700 active:text-white"
+            class="my-2 rounded bg-white/35 p-2 font-semibold shadow-md shadow-black/60 transition-all hover:bg-emerald-900 hover:text-white active:scale-105 active:bg-emerald-700 active:text-white dark:bg-sky-950 dark:text-white dark:hover:bg-sky-900 dark:active:bg-sky-700"
           >
             Flag
           </button>
           <button
             id="btn-show-coatofarms"
-            class="my-2 rounded bg-white/35 p-2 font-semibold shadow-md shadow-black/60 transition-all hover:bg-emerald-900 hover:text-white active:scale-105 active:bg-cyan-700 active:text-white disabled:bg-gray-300 disabled:text-gray-500 disabled:active:scale-100"
+            class="my-2 rounded bg-white/35 p-2 font-semibold shadow-md shadow-black/60 transition-all hover:bg-emerald-900 hover:text-white active:scale-105 active:bg-emerald-700 active:text-white disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:active:scale-100 dark:bg-sky-950 dark:text-white dark:hover:bg-sky-900 dark:active:bg-sky-700 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
           >
             Coat of arms
           </button>
@@ -196,12 +212,12 @@
                 />
                 <path
                   id="svgpath-landlocked-true"
-                  class="hidden fill-green-900"
+                  class="hidden fill-green-900 dark:fill-green-500"
                   d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
                 />
                 <path
                   id="svgpath-landlocked-false"
-                  class="hidden fill-red-900"
+                  class="hidden fill-red-900 dark:fill-red-600"
                   d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
                 />
               </svg>
@@ -222,12 +238,12 @@
                 />
                 <path
                   id="svgpath-independent-true"
-                  class="hidden fill-green-900"
+                  class="hidden fill-green-900 dark:fill-green-500"
                   d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
                 />
                 <path
                   id="svgpath-independent-false"
-                  class="hidden fill-red-900"
+                  class="hidden fill-red-900 dark:fill-red-600"
                   d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
                 />
               </svg>
@@ -248,12 +264,12 @@
                 />
                 <path
                   id="svgpath-unmember-true"
-                  class="hidden fill-green-900"
+                  class="hidden fill-green-900 dark:fill-green-500"
                   d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
                 />
                 <path
                   id="svgpath-unmember-false"
-                  class="hidden fill-red-900"
+                  class="hidden fill-red-900 dark:fill-red-600"
                   d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
                 />
               </svg>
