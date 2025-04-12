@@ -8,8 +8,8 @@
     <script src="src/main.js" defer></script>
     <title>Country Viewer</title>
   </head>
-  <body class="bg-gray-900">
-    <header class="bg-red-700">
+  <body class="bg-[#D5F2E3]">
+    <header class="bg-emerald-900">
       <div class="flex items-center justify-between p-2">
         <a href="index.html">
           <img
@@ -22,7 +22,9 @@
         <p class="text-white">Light mode(?)</p>
       </div>
     </header>
-    <nav class="sticky top-0 bg-purple-600 p-4">
+    <nav
+      class="sticky top-0 z-1 bg-emerald-800 p-4 inset-shadow-sm inset-shadow-emerald-900"
+    >
       <div class="flex items-center justify-between">
         <button
           id="btn-burger"
@@ -41,69 +43,87 @@
             class="block h-1 w-5 bg-white group-[.menu-closed]:[transition:rotate_100ms_0ms,translate_100ms_100ms] group-[.menu-open]:-translate-y-[6px] group-[.menu-open]:-rotate-45 group-[.menu-open]:[transition:translate_100ms_0ms,rotate_100ms_100ms] before:content-['']"
           ></span>
         </button>
-        <div class="flex rounded bg-white p-1">
-          <form
-            id="search-bar"
-            class="flex items-center justify-between"
-            action=""
-          >
-            <input
-              type="text"
-              name="search-country"
-              id="search-country"
-              placeholder="Enter country name..."
-              class="rounded md:min-w-64"
-            />
-            <button id="btn-submit-search" type="submit">
-              <img
-                loading="lazy"
-                src="public/assets/search-icon.svg"
-                alt="Country search icon"
-                class="size-fit"
+        <div class="flex flex-row">
+          <a href="index.html" class="m-auto mr-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+            >
+              <path
+                class="fill-white"
+                d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"
               />
-            </button>
-          </form>
+            </svg>
+          </a>
+          <div class="flex rounded bg-white p-1">
+            <form
+              id="search-bar"
+              class="flex items-center justify-between"
+              action=""
+            >
+              <input
+                type="text"
+                name="search-country"
+                id="search-country"
+                placeholder="Enter country name..."
+                class="rounded md:min-w-64"
+              />
+              <button id="btn-submit-search" type="submit">
+                <img
+                  loading="lazy"
+                  src="public/assets/search-icon.svg"
+                  alt="Country search icon"
+                  class="size-fit"
+                />
+              </button>
+            </form>
+          </div>
         </div>
 
         <ul
-          class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around rounded bg-purple-600 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row lg:divide-x lg:rounded-none"
+          class="absolute top-15 -left-[100%] flex h-[60vh] w-[80vw] flex-col justify-around rounded bg-emerald-800 text-white transition-all peer-[.menu-open]:translate-x-[100vw] lg:static lg:flex lg:h-auto lg:w-auto lg:flex-row lg:divide-x lg:rounded-none"
         >
-          <li id="nav-asia" class="px-2 transition-colors hover:bg-purple-700">
+          <li
+            id="nav-asia"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
+          >
             <button>Asia</button>
           </li>
           <li
             id="nav-africa"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
           >
             <button>Africa</button>
           </li>
           <li
             id="nav-europe"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
           >
             <button>Europe</button>
           </li>
           <li
             id="nav-northamerica"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
           >
             <button>North America</button>
           </li>
           <li
             id="nav-southamerica"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
           >
             <button>South America</button>
           </li>
           <li
             id="nav-oceania"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
           >
             <button>Oceania</button>
           </li>
           <li
             id="nav-antarctica"
-            class="rounded px-2 transition-colors hover:bg-purple-700"
+            class="rounded px-2 py-4 transition-colors hover:bg-emerald-900 active:bg-lime-800 lg:py-0"
           >
             <button>Antarctica</button>
           </li>
@@ -111,9 +131,7 @@
       </div>
     </nav>
 
-    <main
-      class="m-4 grid grid-cols-1 border-4 border-red-400 text-white md:grid-cols-2"
-    >
+    <main class="m-4 grid grid-cols-1 border-4 border-red-400 md:grid-cols-2">
       <div
         class="col-span-1 m-4 flex flex-col justify-center text-center md:col-span-2"
       >
@@ -139,10 +157,16 @@
         </div>
 
         <div class="m-2 flex justify-center gap-1">
-          <button id="btn-show-flag" class="rounded border-2 p-2 px-4">
+          <button
+            id="btn-show-flag"
+            class="my-2 rounded bg-white/35 p-2 font-semibold shadow-md shadow-black/60 transition-all hover:bg-emerald-900 hover:text-white active:scale-105 active:bg-cyan-700 active:text-white"
+          >
             Flag
           </button>
-          <button id="btn-show-coatofarms" class="rounded border-2 p-2 px-4">
+          <button
+            id="btn-show-coatofarms"
+            class="my-2 rounded bg-white/35 p-2 font-semibold shadow-md shadow-black/60 transition-all hover:bg-emerald-900 hover:text-white active:scale-105 active:bg-cyan-700 active:text-white disabled:bg-gray-300 disabled:text-gray-500 disabled:active:scale-100"
+          >
             Coat of arms
           </button>
         </div>

@@ -43,28 +43,43 @@
             class="block h-1 w-5 bg-white group-[.menu-closed]:[transition:rotate_100ms_0ms,translate_100ms_100ms] group-[.menu-open]:-translate-y-[6px] group-[.menu-open]:-rotate-45 group-[.menu-open]:[transition:translate_100ms_0ms,rotate_100ms_100ms] before:content-['']"
           ></span>
         </button>
-        <div class="flex rounded bg-white p-1">
-          <form
-            id="search-bar"
-            class="flex items-center justify-between"
-            action=""
-          >
-            <input
-              type="text"
-              name="search-country"
-              id="search-country"
-              placeholder="Enter country name..."
-              class="rounded md:min-w-64"
-            />
-            <button id="btn-submit-search" type="submit">
-              <img
-                loading="lazy"
-                src="public/assets/search-icon.svg"
-                alt="Country search icon"
-                class="size-fit"
+        <div class="flex flex-row">
+          <a href="index.html" class="m-auto mr-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+            >
+              <path
+                class="fill-white"
+                d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"
               />
-            </button>
-          </form>
+            </svg>
+          </a>
+          <div class="flex rounded bg-white p-1">
+            <form
+              id="search-bar"
+              class="flex items-center justify-between"
+              action=""
+            >
+              <input
+                type="text"
+                name="search-country"
+                id="search-country"
+                placeholder="Enter country name..."
+                class="rounded md:min-w-64"
+              />
+              <button id="btn-submit-search" type="submit">
+                <img
+                  loading="lazy"
+                  src="public/assets/search-icon.svg"
+                  alt="Country search icon"
+                  class="size-fit"
+                />
+              </button>
+            </form>
+          </div>
         </div>
 
         <ul
@@ -136,7 +151,7 @@
           <h3 class="preview-continent text-lg">Continent</h3>
           <button
             id="btn-details"
-            class="my-2 rounded bg-white/35 p-2 font-semibold text-black shadow-md shadow-black/60 transition-all hover:bg-emerald-900 hover:text-white active:scale-105 active:bg-cyan-700"
+            class="my-2 rounded bg-white/35 p-2 font-semibold text-black shadow-md shadow-black/60 transition-all hover:bg-emerald-900 hover:text-white active:scale-105 active:bg-cyan-700 active:text-white"
           >
             Learn More
           </button>
