@@ -19,7 +19,16 @@
             alt="Country Viewer Logo"
           />
         </a>
-        <p class="text-white">Light mode(?)</p>
+        <svg viewBox="0 0 30 30" class="mr-2 h-[30px] w-[30px]">
+          <circle class="fill-yellow-300" id="overlay" r="15" cx="15" cy="15" />
+          <circle
+            class="translate-x-[10px] -translate-y-[10px] fill-emerald-900"
+            id="overlay"
+            r="15"
+            cx="15"
+            cy="15"
+          />
+        </svg>
       </div>
     </header>
     <nav
@@ -46,10 +55,11 @@
         <div class="flex flex-row">
           <a href="index.html" class="m-auto mr-2">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24px"
+              id="home-icon"
               viewBox="0 -960 960 960"
+              height="24px"
               width="24px"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 class="fill-white"
