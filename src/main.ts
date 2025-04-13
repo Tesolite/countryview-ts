@@ -33,16 +33,24 @@ if (formSearch) {
 const btnToggleDarkMode = document.getElementById("btn-toggle-darkmode");
 btnToggleDarkMode?.addEventListener("click", (): void => {
   document.documentElement.classList.toggle("dark");
+  if (localStorage.getItem("prefersDarkMode") === "true") {
+    localStorage.setItem("prefersDarkMode", "false");
+    return;
+  }
+
+  localStorage.setItem("prefersDarkMode", "true");
 });
 
 const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
 
 document.addEventListener("DOMContentLoaded", (): void => {
   if (isHomePage) {
+    setModePreference();
     displayCountries();
   }
 
   if (isCountryInfoPage) {
+    setModePreference();
     CheckURLParameters(new URL(window.location.href));
   }
 });
@@ -66,6 +74,16 @@ for (let navContinent of navContinents) {
   });
 }
 
+const setModePreference = (): void => {
+  const prefersDarkMode: boolean =
+    localStorage.getItem("prefersDarkMode") === "true" ? true : false;
+
+  if (prefersDarkMode) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+};
 const handleNavClick = (continent: string): void => {
   originURL.searchParams.delete("search");
   originURL.searchParams.set("continent", continent);

@@ -27,13 +27,20 @@ if (formSearch) {
 const btnToggleDarkMode = document.getElementById("btn-toggle-darkmode");
 btnToggleDarkMode?.addEventListener("click", () => {
     document.documentElement.classList.toggle("dark");
+    if (localStorage.getItem("prefersDarkMode") === "true") {
+        localStorage.setItem("prefersDarkMode", "false");
+        return;
+    }
+    localStorage.setItem("prefersDarkMode", "true");
 });
 const btnHamburger = document.getElementById("btn-burger");
 document.addEventListener("DOMContentLoaded", () => {
     if (isHomePage) {
+        setModePreference();
         displayCountries();
     }
     if (isCountryInfoPage) {
+        setModePreference();
         CheckURLParameters(new URL(window.location.href));
     }
 });
@@ -55,6 +62,15 @@ for (let navContinent of navContinents) {
         handleNavClick(navContinent.name);
     });
 }
+const setModePreference = () => {
+    const prefersDarkMode = localStorage.getItem("prefersDarkMode") === "true" ? true : false;
+    if (prefersDarkMode) {
+        document.documentElement.classList.add("dark");
+    }
+    else {
+        document.documentElement.classList.remove("dark");
+    }
+};
 const handleNavClick = (continent) => {
     originURL.searchParams.delete("search");
     originURL.searchParams.set("continent", continent);
