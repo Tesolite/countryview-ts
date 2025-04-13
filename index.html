@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Website for an overview of all countries and country details"
+    />
     <link rel="stylesheet" href="src/output.css" />
     <link rel="preconnect" href="https://restcountries.com/" />
     <script src="src/main.js" defer></script>
@@ -19,7 +23,11 @@
             alt="Country Viewer Logo"
           />
         </a>
-        <button id="btn-toggle-darkmode" class="cursor-pointer">
+        <button
+          id="btn-toggle-darkmode"
+          class="cursor-pointer"
+          aria-label="Dark mode toggle"
+        >
           <svg viewBox="0 0 30 30" class="mr-2 h-[30px] w-[30px]">
             <circle
               class="fill-yellow-300 transition-all dark:fill-white"
@@ -62,7 +70,7 @@
           ></span>
         </button>
         <div class="flex flex-row">
-          <a href="index.html" class="m-auto mr-2">
+          <a href="index.html" class="m-auto mr-2" aria-label="Home page link">
             <svg
               id="home-icon"
               viewBox="0 -960 960 960"
