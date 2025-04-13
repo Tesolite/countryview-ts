@@ -30,6 +30,10 @@ if (formSearch) {
     }
   };
 }
+const btnToggleDarkMode = document.getElementById("btn-toggle-darkmode");
+btnToggleDarkMode?.addEventListener("click", (): void => {
+  document.documentElement.classList.toggle("dark");
+});
 
 const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
 

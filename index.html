@@ -8,8 +8,8 @@
     <script src="src/main.js" defer></script>
     <title>Country Viewer</title>
   </head>
-  <body class="bg-[#D5F2E3] dark:bg-sky-950 dark:text-white">
-    <header class="bg-emerald-900 dark:bg-slate-900">
+  <body class="bg-[#D5F2E3] transition-colors dark:bg-sky-950 dark:text-white">
+    <header class="bg-emerald-900 transition-colors dark:bg-slate-900">
       <div class="flex items-center justify-between p-2">
         <a href="index.html">
           <img
@@ -19,28 +19,31 @@
             alt="Country Viewer Logo"
           />
         </a>
-        <svg viewBox="0 0 30 30" class="mr-2 h-[30px] w-[30px]">
-          <circle
-            class="fill-yellow-300 dark:fill-white"
-            id="overlay"
-            r="15"
-            cx="15"
-            cy="15"
-          />
-          <circle
-            class="fill-slate-900 dark:-translate-x-[22px] dark:translate-y-[7px]"
-            id="overlay"
-            r="15"
-            cx="45"
-            cy="0"
-          />
-        </svg>
+        <button id="btn-toggle-darkmode" class="cursor-pointer">
+          <svg viewBox="0 0 30 30" class="mr-2 h-[30px] w-[30px]">
+            <circle
+              class="fill-yellow-300 transition-all dark:fill-white"
+              id="overlay"
+              r="15"
+              cx="15"
+              cy="15"
+            />
+            <circle
+              class="fill-emerald-900 transition-all dark:-translate-x-[22px] dark:translate-y-[7px] dark:fill-slate-900"
+              id="overlay"
+              r="15"
+              cx="45"
+              cy="0"
+            />
+          </svg>
+        </button>
       </div>
     </header>
     <nav
-      class="sticky top-0 z-1 bg-emerald-800 p-4 inset-shadow-sm inset-shadow-emerald-900 dark:bg-slate-800 dark:inset-shadow-slate-950"
+      class="sticky top-0 z-1 bg-emerald-800 p-4 inset-shadow-sm inset-shadow-emerald-900 transition-all dark:bg-slate-800 dark:inset-shadow-slate-950"
     >
       <div class="flex items-center justify-between">
+        <!-- Only visible on mobile -->
         <button
           id="btn-burger"
           class="hamburger menu-closed group peer flex flex-col gap-[2px] rounded p-1 hover:shadow lg:hidden"
@@ -74,11 +77,7 @@
             </svg>
           </a>
           <div class="flex rounded bg-white p-1">
-            <form
-              id="search-bar"
-              class="flex items-center justify-between"
-              action=""
-            >
+            <form id="search-bar" class="flex items-center justify-between">
               <input
                 type="text"
                 name="search-country"
