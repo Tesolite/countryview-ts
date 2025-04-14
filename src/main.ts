@@ -1,7 +1,5 @@
-let originURL = new URL(document.location.origin);
-let countryInfoURL = new URL(
-  document.location.origin + "/countryview-ts/country.html",
-);
+let originURL = new URL(document.location.origin + "/countryview-ts/");
+let countryInfoURL = new URL(document.location.origin + "country.html");
 
 const websiteLogo = document.getElementById("website-logo") as HTMLImageElement;
 
