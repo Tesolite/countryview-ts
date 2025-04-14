@@ -266,10 +266,16 @@ const displayCountryInfo = async (country) => {
     }
     if (flag) {
         flag.src = data.flag;
-        flag.alt = data.flagAlt;
+        if (flag.alt) {
+            flag.alt = data.flagAlt;
+        }
+        else {
+            flag.alt = `Flag of ${data.commonName}`;
+        }
     }
     if (coatOfArms && data.coatOfArms) {
         coatOfArms.src = data.coatOfArms;
+        coatOfArms.alt = `Coat of arms of ${data.commonName}`;
     }
     else {
         btnShowCoatOfArms.disabled = true;
