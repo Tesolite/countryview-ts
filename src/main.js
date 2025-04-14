@@ -1,8 +1,9 @@
 "use strict";
 let originURL = new URL(document.location.origin);
-let countryInfoURL = new URL(document.location.origin + "/country.html");
+let countryInfoURL = new URL(document.location.origin + "/countryview-ts/country.html");
 const websiteLogo = document.getElementById("website-logo");
-const isHomePage = window.location.pathname === "/" || window.location.pathname === "/index.html"
+const isHomePage = window.location.pathname === "/countryview-ts/" ||
+    window.location.pathname === "/countryview-ts/index.html"
     ? true
     : false;
 const isCountryInfoPage = window.location.pathname === "/country.html" ? true : false;
