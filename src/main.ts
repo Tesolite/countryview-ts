@@ -1,4 +1,3 @@
-//TODO: MANAGE SEARCHES WITH 0 RESULTS (SUCH AS SHOWING "NO RESULTS FOUND")
 let originURL = new URL(document.location.origin);
 let countryInfoURL = new URL(document.location.origin + "/country.html");
 
@@ -521,12 +520,21 @@ const getSearchPreview = async (query: string) => {
   const displayedCountries = document.getElementById(
     "country-display-area",
   )?.children;
+  if (!displayedCountries) return;
   if (query.length === 0) {
     displayCountries();
     return;
   }
-  const searchResults = await combinedSearch(query);
-  if (!displayedCountries) return;
+  const searchResults: string[] = await combinedSearch(query);
+  if (searchResults.length <= 0) {
+    if (isHomePage) {
+      const currentURL = new URL(window.location.href);
+      currentURL.searchParams.delete("search");
+      window.history.replaceState(null, "", currentURL);
+    }
+    alert("No results found!");
+    return;
+  }
 
   for (let country of displayedCountries) {
     const countryCommonName = getCountryPreviewContent(

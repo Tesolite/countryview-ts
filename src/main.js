@@ -1,5 +1,4 @@
 "use strict";
-//TODO: MANAGE SEARCHES WITH 0 RESULTS (SUCH AS SHOWING "NO RESULTS FOUND")
 let originURL = new URL(document.location.origin);
 let countryInfoURL = new URL(document.location.origin + "/country.html");
 const websiteLogo = document.getElementById("website-logo");
@@ -389,13 +388,22 @@ const getContinentPreviews = (continent) => {
 };
 const getSearchPreview = async (query) => {
     const displayedCountries = document.getElementById("country-display-area")?.children;
+    if (!displayedCountries)
+        return;
     if (query.length === 0) {
         displayCountries();
         return;
     }
     const searchResults = await combinedSearch(query);
-    if (!displayedCountries)
+    if (searchResults.length <= 0) {
+        if (isHomePage) {
+            const currentURL = new URL(window.location.href);
+            currentURL.searchParams.delete("search");
+            window.history.replaceState(null, "", currentURL);
+        }
+        alert("No results found!");
         return;
+    }
     for (let country of displayedCountries) {
         const countryCommonName = getCountryPreviewContent(country.id, "commonName");
         if (!countryCommonName)
