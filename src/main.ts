@@ -12,7 +12,7 @@ const isHomePage =
     : false;
 
 const isCountryInfoPage =
-  window.location.pathname === "/country.html" ? true : false;
+  window.location.pathname === "/countryview-ts/country.html" ? true : false;
 
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {

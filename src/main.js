@@ -6,7 +6,7 @@ const isHomePage = window.location.pathname === "/countryview-ts/" ||
     window.location.pathname === "/countryview-ts/index.html"
     ? true
     : false;
-const isCountryInfoPage = window.location.pathname === "/country.html" ? true : false;
+const isCountryInfoPage = window.location.pathname === "/countryview-ts/country.html" ? true : false;
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
     const inQuery = document.getElementById("search-country");
