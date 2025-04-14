@@ -2,6 +2,8 @@
 let originURL = new URL(document.location.origin);
 let countryInfoURL = new URL(document.location.origin + "/country.html");
 
+const websiteLogo = document.getElementById("website-logo") as HTMLImageElement;
+
 const isHomePage =
   window.location.pathname === "/" || window.location.pathname === "/index.html"
     ? true
@@ -35,10 +37,12 @@ btnToggleDarkMode?.addEventListener("click", (): void => {
   document.documentElement.classList.toggle("dark");
   if (localStorage.getItem("prefersDarkMode") === "true") {
     localStorage.setItem("prefersDarkMode", "false");
+    websiteLogo.src = "public/assets/logo-lm.png";
     return;
   }
 
   localStorage.setItem("prefersDarkMode", "true");
+  websiteLogo.src = "public/assets/logo-dm.png";
 });
 
 const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
@@ -80,8 +84,10 @@ const setModePreference = (): void => {
 
   if (prefersDarkMode) {
     document.documentElement.classList.add("dark");
+    websiteLogo.src = "public/assets/logo-dm.png";
   } else {
     document.documentElement.classList.remove("dark");
+    websiteLogo.src = "public/assets/logo-lm.png";
   }
 };
 const handleNavClick = (continent: string): void => {
