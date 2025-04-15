@@ -1,8 +1,10 @@
+//Variables for referring to website pages
 let originURL = new URL(document.location.origin + "/countryview-ts/");
 let countryInfoURL = new URL(originURL + "country.html");
 
 const websiteLogo = document.getElementById("website-logo") as HTMLImageElement;
 
+//Used to check whether current page is the homepage or country info page
 const isHomePage =
   window.location.pathname === "/countryview-ts/" ||
   window.location.pathname === "/countryview-ts/index.html"
@@ -12,6 +14,7 @@ const isHomePage =
 const isCountryInfoPage =
   window.location.pathname === "/countryview-ts/country.html" ? true : false;
 
+//Managing searchbar input and preventing default page reload
 const formSearch = document.getElementById("search-bar");
 if (formSearch) {
   const inQuery: HTMLInputElement = document.getElementById(
@@ -22,6 +25,7 @@ if (formSearch) {
     originURL.searchParams.delete("continent");
     originURL.searchParams.set("search", inQuery.value);
 
+    //If a search occurs outside of homepage, save search query in URL and perform it on homepage
     if (isHomePage) {
       getSearchPreview(inQuery.value);
       const currentURL = new URL(window.location.href);
@@ -32,6 +36,21 @@ if (formSearch) {
     }
   };
 }
+
+//Initial setup of homepage and country info page, taking into account settings and queries
+document.addEventListener("DOMContentLoaded", (): void => {
+  if (isHomePage) {
+    setModePreference();
+    displayCountries();
+  }
+
+  if (isCountryInfoPage) {
+    setModePreference();
+    CheckURLParameters(new URL(window.location.href));
+  }
+});
+
+//Managing dark mode through button press
 const btnToggleDarkMode = document.getElementById("btn-toggle-darkmode");
 btnToggleDarkMode?.addEventListener("click", (): void => {
   document.documentElement.classList.toggle("dark");
@@ -45,39 +64,7 @@ btnToggleDarkMode?.addEventListener("click", (): void => {
   websiteLogo.src = "public/assets/logo-dm.png";
 });
 
-const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
-
-document.addEventListener("DOMContentLoaded", (): void => {
-  if (isHomePage) {
-    setModePreference();
-    displayCountries();
-  }
-
-  if (isCountryInfoPage) {
-    setModePreference();
-    CheckURLParameters(new URL(window.location.href));
-  }
-});
-
-//Navbar click event handling
-const navContinents = [
-  { id: "nav-asia", name: "asia" },
-  { id: "nav-africa", name: "africa" },
-  { id: "nav-europe", name: "europe" },
-  { id: "nav-northamerica", name: "north america" },
-  { id: "nav-southamerica", name: "south america" },
-  { id: "nav-oceania", name: "oceania" },
-  { id: "nav-antarctica", name: "antarctica" },
-];
-
-for (let navContinent of navContinents) {
-  const continentPointer = document.getElementById(navContinent.id);
-  if (!continentPointer) continue;
-  continentPointer.addEventListener("click", () => {
-    handleNavClick(navContinent.name);
-  });
-}
-
+//Manage dark and light mode preferences of user
 const setModePreference = (): void => {
   const prefersDarkMode: boolean =
     localStorage.getItem("prefersDarkMode") === "true" ? true : false;
@@ -90,24 +77,51 @@ const setModePreference = (): void => {
     websiteLogo.src = "public/assets/logo-lm.png";
   }
 };
+
+const btnHamburger = document.getElementById("btn-burger") as HTMLButtonElement;
+
+//Navbar click event handling
+const navContinents = [
+  { id: "nav-asia", name: "asia" },
+  { id: "nav-africa", name: "africa" },
+  { id: "nav-europe", name: "europe" },
+  { id: "nav-northamerica", name: "north america" },
+  { id: "nav-southamerica", name: "south america" },
+  { id: "nav-oceania", name: "oceania" },
+  { id: "nav-antarctica", name: "antarctica" },
+];
+for (let navContinent of navContinents) {
+  const continentPointer = document.getElementById(navContinent.id);
+  if (!continentPointer) continue;
+  continentPointer.addEventListener("click", () => {
+    handleNavClick(navContinent.name);
+  });
+}
+
 const handleNavClick = (continent: string): void => {
   originURL.searchParams.delete("search");
   originURL.searchParams.set("continent", continent);
+
+  //If homepage, set queries in URL without refreshing.
   if (isHomePage) {
     getContinentPreviews(continent);
     const currentURL = new URL(window.location.href);
     currentURL.searchParams.set("continent", continent);
     window.history.replaceState(null, "", currentURL);
+
+    //Otherwise, navigate to homepage and filter desired results
   } else {
     window.open(originURL, "_self");
   }
 };
 
+//Set query for desired country and navigate to country info page
 const handleInfoButtonClick = (country: string): void => {
   countryInfoURL.searchParams.set("country", country);
   window.location.href = countryInfoURL.toString();
 };
 
+//Manage state of burger menu icon (cross vs hamburger, open and close toggle)
 btnHamburger?.addEventListener("click", () => {
   const isOpen = btnHamburger.classList.contains("menu-open") ? true : false;
   if (!isOpen) {
@@ -125,6 +139,7 @@ type CountryPreview = {
   continents: string[];
 };
 
+//Type for displaying country details on country page
 type CountryDetails = {
   flag: string;
   flagAlt: string;
@@ -141,24 +156,7 @@ type CountryDetails = {
   isIndependent: boolean;
   isUNMember: boolean;
 };
-const countryInfoFlag = document.getElementById("country-flag");
-const countryInfoCoatOfArms = document.getElementById("country-coatofarms");
 
-const btnShowFlag = document.getElementById(
-  "btn-show-flag",
-) as HTMLButtonElement;
-btnShowFlag?.addEventListener("click", () => {
-  countryInfoCoatOfArms?.classList.replace("block", "hidden");
-  countryInfoFlag?.classList.replace("hidden", "block");
-});
-
-const btnShowCoatOfArms = document.getElementById(
-  "btn-show-coatofarms",
-) as HTMLButtonElement;
-btnShowCoatOfArms?.addEventListener("click", () => {
-  countryInfoFlag?.classList.replace("block", "hidden");
-  countryInfoCoatOfArms?.classList.replace("hidden", "block");
-});
 type DetailsResponse = DetailsSuccess | DetailsFail;
 
 type DetailsSuccess = {
@@ -171,7 +169,26 @@ type DetailsFail = {
   message: Error;
 };
 
-//Function for displaying all countries stores in the RESTCountries API.
+//Manage switching between country flag and coat of arms
+const countryInfoFlag = document.getElementById("country-flag");
+const countryInfoCoatOfArms = document.getElementById("country-coatofarms");
+const btnShowFlag = document.getElementById(
+  "btn-show-flag",
+) as HTMLButtonElement;
+btnShowFlag?.addEventListener("click", () => {
+  countryInfoCoatOfArms?.classList.replace("block", "hidden");
+  countryInfoFlag?.classList.replace("hidden", "block");
+});
+const btnShowCoatOfArms = document.getElementById(
+  "btn-show-coatofarms",
+) as HTMLButtonElement;
+btnShowCoatOfArms?.addEventListener("click", () => {
+  countryInfoFlag?.classList.replace("block", "hidden");
+  countryInfoCoatOfArms?.classList.replace("hidden", "block");
+});
+
+//Function for displaying all countries stored in the RESTCountries API.
+//If parameters are present, results are filtered based on these.
 const displayCountries = async () => {
   const url: string =
     "https://restcountries.com/v3.1/all?fields=name,flags,region,continents";
@@ -209,7 +226,7 @@ const displayCountries = async () => {
       };
       gatheredData.push(preview);
     }
-
+    //Sort and display countries alphabetically based on name
     const sortedData: CountryPreview[] = gatheredData.sort((a, b) =>
       a.commonName > b.commonName ? 1 : a.commonName < b.commonName ? -1 : 0,
     );
@@ -219,6 +236,8 @@ const displayCountries = async () => {
   } catch (error) {
     console.error(error);
   }
+
+  //Check for any URL parameters and display only relevant countries
   CheckURLParameters(new URL(window.location.href));
 };
 
@@ -294,23 +313,9 @@ const displayPreview = (country: CountryPreview) => {
     ?.classList.replace("hidden", "flex");
 };
 
-const CheckURLParameters = (url: URL) => {
-  const continentParam = url.searchParams.get("continent");
-  const countryParam = url.searchParams.get("country");
-  const userSearchParam = url.searchParams.get("search");
-  if (userSearchParam) {
-    getSearchPreview(userSearchParam);
-    return;
-  }
-  if (continentParam) {
-    getContinentPreviews(continentParam);
-  }
-  if (countryParam) {
-    displayCountryInfo(countryParam);
-  }
-};
-
+//Display detailed information about specific country on country page
 const displayCountryInfo = async (country: string): Promise<void> => {
+  //Get object containing details of specified country
   const countryInfo: DetailsResponse = await detailedCountryInfo(country);
 
   if (!countryInfo.success) {
@@ -319,6 +324,7 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   }
   const data = countryInfo.data;
 
+  //Variables with references to relevant elements
   const commonName = document.getElementById(
     "country-name-common",
   ) as HTMLHeadingElement | null;
@@ -372,6 +378,7 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   const unMemberTrue = document.getElementById("svgpath-unmember-true");
   const unMemberFalse = document.getElementById("svgpath-unmember-false");
 
+  //Filling elements with relevant data
   if (commonName) {
     commonName.textContent = data.commonName;
   }
@@ -389,7 +396,7 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   if (coatOfArms && data.coatOfArms) {
     coatOfArms.src = data.coatOfArms;
     coatOfArms.alt = `Coat of arms of ${data.commonName}`;
-  } else {  
+  } else {
     btnShowCoatOfArms.disabled = true;
   }
   if (continents && continents.textContent) {
@@ -451,6 +458,7 @@ const displayCountryInfo = async (country: string): Promise<void> => {
   }
 };
 
+//Function for grabbing relevant data from the API
 const detailedCountryInfo = async (
   country: string,
 ): Promise<DetailsResponse> => {
@@ -504,6 +512,24 @@ const detailedCountryInfo = async (
   }
 };
 
+//Check URL for relevant parameters and display data appropriately
+const CheckURLParameters = (url: URL) => {
+  const continentParam = url.searchParams.get("continent");
+  const countryParam = url.searchParams.get("country");
+  const userSearchParam = url.searchParams.get("search");
+  if (userSearchParam) {
+    getSearchPreview(userSearchParam);
+    return;
+  }
+  if (continentParam) {
+    getContinentPreviews(continentParam);
+  }
+  if (countryParam) {
+    displayCountryInfo(countryParam);
+  }
+};
+
+//Filtering of countries based on continents
 const getContinentPreviews = (continent: string) => {
   const displayedCountries = document.getElementById(
     "country-display-area",
@@ -522,6 +548,8 @@ const getContinentPreviews = (continent: string) => {
     country.classList.replace("hidden", "flex");
   }
 };
+
+//Filtering countries based on search query
 const getSearchPreview = async (query: string) => {
   const displayedCountries = document.getElementById(
     "country-display-area",
@@ -556,6 +584,7 @@ const getSearchPreview = async (query: string) => {
   }
 };
 
+//User search of API data through common name of countries, translations, and codes
 const combinedSearch = async (query: string): Promise<string[]> => {
   let commonNameSearch = await searchByCommonName(query);
   let foreignNameSearch = await searchByForeignName(query);
@@ -567,10 +596,12 @@ const combinedSearch = async (query: string): Promise<string[]> => {
     foreignNameSearch = [];
   }
 
+  //Combine all search results into a single set to prevent duplicates
   let combinedResults: Set<string> = new Set(
     commonNameSearch.concat(foreignNameSearch, codeSearch),
   );
 
+  //Turn set into an array and return it
   return Array.from(combinedResults.values());
 };
 
@@ -674,6 +705,7 @@ const searchByCountryCode = async (query: string): Promise<string[]> => {
   return matchingCountries;
 };
 
+//Function for extracting common name or continent from previews
 const getCountryPreviewContent = (
   countryID: string,
   content: "commonName" | "continent",
