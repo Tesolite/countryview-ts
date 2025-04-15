@@ -139,7 +139,8 @@ const displayCountries = async () => {
         //Iterate through each country in the JSON of the fetched API
         for (let country of data) {
             //Traverse the JSON to object containing native names and choose first available option
-            //If none available, common name will be displayed as the native name.
+            //If none available, fallback to common name as native.
+            //Takes the assumption that the native name stored first in the API is the most relevant.
             let findNativeName = country.name.common;
             if (country.name.nativeName) {
                 const values = Object.values(country.name.nativeName);
@@ -543,7 +544,9 @@ const searchByCountryCode = async (query) => {
     }
     return matchingCountries;
 };
-//Function for extracting common name or continent from previews
+/** Function for extracting common name or continent from previews
+@param content - Takes either "commoName" or "continent" as inputs to decide which to output
+*/
 const getCountryPreviewContent = (countryID, content) => {
     const countryTemplate = document.getElementById(countryID);
     if (!countryTemplate)
